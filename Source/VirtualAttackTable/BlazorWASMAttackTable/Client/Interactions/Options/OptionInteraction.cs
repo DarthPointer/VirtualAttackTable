@@ -20,6 +20,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
         public TOption Value => _option.Value;
 
         public string OptionName => _option.OptionName;
+        public string OptionDescription => _option.OptionDescription;
 
         private Action ToggleCall
         {
@@ -62,6 +63,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
     public interface IOptionInteraction
     {
         public string OptionName { get; }
+        public string OptionDescription { get; }
         public bool IsSelected { get; }
         void Toggle();
 

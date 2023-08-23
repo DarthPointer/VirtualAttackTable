@@ -13,11 +13,11 @@
         {
             if (optionInteraction.IsSelected)
             {
-                <option value="@optionCode" selected>@optionInteraction.OptionName</option>
+                <option value="@optionCode" title="@optionInteraction.OptionDescription" selected>@optionInteraction.OptionName</option>
             }
             else
             {
-                <option value="@optionCode">@optionInteraction.OptionName</option>
+                <option value="@optionCode" title="@optionInteraction.OptionDescription">@optionInteraction.OptionName</option>
             }
 
             optionCode++;

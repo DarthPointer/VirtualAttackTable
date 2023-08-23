@@ -3,6 +3,8 @@
     public interface IOption
     {
         string OptionName { get; }
+
+        string OptionDescription { get; }
     }
 
     public interface IOption<out TOption> : IOption
@@ -16,10 +18,13 @@
 
         public string OptionName { get; private init; }
 
-        public Option(TOption value, string optionName)
+        public string OptionDescription { get; private init; }
+
+        public Option(TOption value, string optionName, string optionDescription = "")
         {
             Value = value;
             OptionName = optionName;
+            OptionDescription = optionDescription;
         }
     }
 }
