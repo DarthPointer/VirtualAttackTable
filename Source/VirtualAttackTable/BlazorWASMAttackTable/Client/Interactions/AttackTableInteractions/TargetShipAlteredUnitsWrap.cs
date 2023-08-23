@@ -10,9 +10,9 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         private readonly Dictionary<AbsoluteHeightDefinition, string> _absoluteHeightDefinitionDescriptions = new() { { AbsoluteHeightDefinition.Maximum, "Height between the waterline and highest tip of mast/kingpost."} };
         private readonly Dictionary<AbsoluteLengthDefinition, string> _absoluteLengthDefinitionDescriptions = new() { { AbsoluteLengthDefinition.Maximum, "Full length of a ship (between tips of bow and stern)."} };
 
-        private readonly Dictionary<TargetRangeDefinition, string> _targetRangeDefinitionDescriptions = new() { { TargetRangeDefinition.ByVisibleHight, "Compares visible angular and absolute height difference between reference points." } };
+        private readonly Dictionary<TargetRangeDefinition, string> _targetRangeDefinitionDescriptions = new() { { TargetRangeDefinition.ByVisibleHight, "Compares visible angular and absolute height between reference points." } };
 
-        private readonly Dictionary<AoBDefinition, string> _aoBDefinitionDescriptions = new() { { AoBDefinition.ByRangeAndVisibleLength, "Compares ratio of visible angular vs absolute length between reference points with target range." } };
+        private readonly Dictionary<AoBDefinition, string> _aoBDefinitionDescriptions = new() { { AoBDefinition.ByRangeAndVisibleLength, "Compares visible angular and absolute length between reference points with target range." } };
 
         private readonly Dictionary<TargetSpeedDefinition, string> _targetSpeedDefinitionDescriptions = new() {
             { TargetSpeedDefinition.Linear, "Based on specified absolute length between reference points and time for the target's hull to travel that distance (\"Hull Time\"). Assumes the boat is static or moves along the used line of sight." },
