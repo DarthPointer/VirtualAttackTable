@@ -1,0 +1,46 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using BlazorWASMAttackTable.Client.Elements.AttackTableElements
+@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions;
+
+@inherits SubscriptionDisposingElement
+
+<div class="flexcolumn" style="height: 100%;">
+    <div style="margin: 10px;
+        overflow-y: scroll;
+        flex: 1 0 0;">
+
+        <table style="margin: 10px; border-spacing: 0 5px; border-collapse: separate;
+        width: calc(100% - 20px); table-layout: fixed">
+        
+        <UnitsSelection Interaction="@Interaction.UnitsSelection"/>
+
+        @foreach (TargetShipAlteredUnitsWrap targetShip in Interaction.TargetShips)
+        {
+            <AttackTableShipEntry TargetShip="@targetShip" AttackTable="Interaction"/>
+        }
+
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public AttackTableInteraction Interaction { get; set; } = null!;
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Subscribe(Interaction.TargetShips.ListChanged, OnTargetsListChanged);
+    }
+
+    private void OnTargetsListChanged()
+    {
+        StateHasChanged();
+    }
+
+    #endregion
+}
+

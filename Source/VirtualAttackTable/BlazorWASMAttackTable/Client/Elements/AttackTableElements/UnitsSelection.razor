@@ -1,0 +1,22 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions.Options;
+
+<tr style="background: rgb(220, 220, 220); position: sticky; top: 0;">
+    <td style="width: 200px;"/>
+    <td style="width: 100px;">Type Code</td>
+
+    @foreach(IListForSingleOption unitsSelection in Interaction.UnitOptionLists)
+    {
+        <td><div id="units-selection-header-cell"><TitledUnitsSelection Interaction="unitsSelection" /></div></td>
+    }
+
+    <td style="width: 50px"></td>
+</tr>
+
+
+@code {
+    #region Parameters
+    [Parameter, EditorRequired]
+    public BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions.UnitsSelection Interaction { get; set; } = null!;
+    #endregion
+}
+

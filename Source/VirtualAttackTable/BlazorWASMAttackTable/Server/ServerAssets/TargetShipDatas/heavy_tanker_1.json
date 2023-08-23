@@ -1,0 +1,24 @@
+{
+  "GRT": 12942.0,
+  "MaxHeightMeters": 26.023777,
+  "VerticalImageRange": {
+    "Start": 0.57421875,
+    "End": 0.90625
+  },
+  "LengthMeters": 142.0,
+  "HorizontalImageRange": {
+    "Start": 0.078125,
+    "End": 0.92089844
+  },
+  "DraughtMeters": 5.3146963,
+  "MaxSpeedMpS": 6.6877933,
+  "TypeName": "heavy_tanker_1",
+  "EnginePlacement": 0,
+  "IslandsPositions": 0,
+  "Superstructure": 0,
+  "Structures": [
+    1,
+    2,
+    1
+  ]
+}

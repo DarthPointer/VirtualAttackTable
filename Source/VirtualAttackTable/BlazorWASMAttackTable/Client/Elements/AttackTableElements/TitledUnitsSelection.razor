@@ -1,0 +1,14 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.Common
+@using BlazorWASMAttackTable.Client.Interactions.Options;
+
+<div class="flexcolumn" style="text-align: center;">
+    @Interaction.InteractionHeader
+
+    <Combobox Interaction="@Interaction"/>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public IListForSingleOption Interaction { get; set; } = null!;
+}
+

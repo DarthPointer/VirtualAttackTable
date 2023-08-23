@@ -1,0 +1,67 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions
+@using BlazorWASMAttackTable.Client.Interactions.IdentificationInteractions
+@using BlazorWASMAttackTable.Client.Elements.Common
+@using BlazorWASMAttackTable.Client.Elements.ShipIdentificationElements
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@inherits SubscriptionDisposingElement
+
+<div class="flexcolumn" style="height: 100%;">
+    <div class="flexrow"
+        style="background: rgb(255, 255, 255);">
+        <div style="margin-right: 30px;">
+            <ListOfOptions Interaction="@Interaction.EnginePlacement"/>
+        </div>
+
+        <div style="margin-right: 30px;">
+            <ListOfOptions Interaction="@Interaction.Superstructure"/>
+        </div>
+
+        <div style="margin-right: 30px;">
+            <h4>
+                Islands
+            </h4>
+        
+            <div>
+                <CustomTristateCheckbox Interaction="@Interaction.BowIsland"/>
+                <CustomTristateCheckbox Interaction="@Interaction.MidIsland"/>
+                <CustomTristateCheckbox Interaction="@Interaction.SternIsland"/>
+            </div>
+        </div>
+
+        <div style="margin-right: 30px;">
+            <h4>Structures</h4>
+
+            <input @bind="Interaction.StructuresCode.Value" @bind:event="oninput" />
+        </div>
+
+    </div>
+
+    <div class="flexrow-wrap" style="overflow-y: auto;">
+        @if (Interaction.FilteredShipDatas.Count == 0)
+        {
+            <h1>No Match</h1>
+        }
+        else foreach (SelectTargetShipDataWrapInteraction targetShipDataWrap in Interaction.FilteredShipDatas)
+        {
+            <div style="margin: 5px" id="ship-card-to-select">
+                <ShipIdentificationCard TargetShipDataWrap="targetShipDataWrap"/>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+    #region Properties
+    [Parameter, EditorRequired]
+    public required IdentifyShipInteraction Interaction { get; set; }
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        Subscribe(Interaction.FilteredShipDatasChanged, StateHasChanged);
+    }
+    #endregion
+}

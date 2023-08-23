@@ -1,0 +1,25 @@
+{
+  "GRT": 2866.0,
+  "MaxHeightMeters": 32.9726,
+  "VerticalImageRange": {
+    "Start": 0.33398438,
+    "End": 0.9140625
+  },
+  "LengthMeters": 96.0,
+  "HorizontalImageRange": {
+    "Start": 0.079589844,
+    "End": 0.92089844
+  },
+  "DraughtMeters": 4.0385413,
+  "MaxSpeedMpS": 5.1444564,
+  "TypeName": "light_merchant_1",
+  "EnginePlacement": 0,
+  "IslandsPositions": 7,
+  "Superstructure": 1,
+  "Structures": [
+    0,
+    0,
+    2,
+    0
+  ]
+}

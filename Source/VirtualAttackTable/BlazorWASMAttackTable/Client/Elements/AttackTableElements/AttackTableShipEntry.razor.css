@@ -1,0 +1,14 @@
+﻿#attack-table-row-element {
+    margin: 3px;
+    height: calc(100px - 6px);
+}
+
+#attack-table-entry-row {
+    height: 100px;
+    background: rgb(240, 240, 240);
+    outline: 1.5px solid rgb(225, 225, 225);
+}
+
+    #attack-table-entry-row:hover {
+        outline: 1.5px solid rgb(0, 0, 255);
+    }

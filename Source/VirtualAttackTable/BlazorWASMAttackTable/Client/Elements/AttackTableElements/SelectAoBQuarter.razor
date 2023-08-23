@@ -1,0 +1,38 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using VirtualAttackTableLib.AttackTarget;
+@using VirtualAttackTableLib.TargetShipParameter;
+
+@inherits SubscriptionDisposingElement
+
+<div class="flexcolumn" style="width: 100%; height: 100%;">
+    <div class="flexrow" style="height: 50%;">
+        <div style="width: 50%;">
+            <AoBQuarterButton Parameter="Parameter" RepresentedQuarter="AoBQuarter.AheadLeft" />
+        </div>
+
+        <div style="width: 50%;">
+            <AoBQuarterButton Parameter="Parameter" RepresentedQuarter="AoBQuarter.AheadRight" />
+        </div>
+    </div>
+
+    <div class="flexrow" style="height: 50%;">
+        <div style="width: 50%;">
+            <AoBQuarterButton Parameter="Parameter" RepresentedQuarter="AoBQuarter.AsternLeft" />
+        </div>
+
+        <div style="width: 50%;">
+            <AoBQuarterButton Parameter="Parameter" RepresentedQuarter="AoBQuarter.AsternRight" />
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public AoBParameter Parameter { get; set; } = null!;
+
+    private void SelectQuarter(AoBQuarter quarter)
+    {
+        Parameter.AoBQuarter = quarter;
+    }
+}
+

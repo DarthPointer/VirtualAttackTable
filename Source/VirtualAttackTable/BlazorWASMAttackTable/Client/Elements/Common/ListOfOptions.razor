@@ -1,0 +1,16 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.Common.ListOfOptionsElements
+@using BlazorWASMAttackTable.Client.Interactions.Options;
+
+<div class="flexcolumn">
+    <h4>@Interaction.InteractionHeader</h4>
+
+    @foreach(IOptionInteraction option in Interaction.Options)
+    {
+        <Option Interaction="@option"/>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public required IListOfOptions Interaction { get; set; }
+}

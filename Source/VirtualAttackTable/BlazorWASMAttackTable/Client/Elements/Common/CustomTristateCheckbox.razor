@@ -1,0 +1,50 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using BlazorWASMAttackTable.Client.Interactions.Common;
+
+@inherits SubscriptionDisposingElement
+
+<div class="flexrow" @onclick="@Interaction.Toggle">
+    <img src="@ImagePath" width="20" height="20" />
+    @Interaction.Header
+</div>
+
+@code {
+    #region Consts
+    private const string MINUS_SVG = "images/ThreeStateCheckbox/minus.svg";
+    private const string PLUS_SVG = "images/ThreeStateCheckbox/plus.svg";
+    private const string NEITHER_SVG = "images/ThreeStateCheckbox/neither.svg";
+    #endregion
+
+    #region Properties
+    [Parameter, EditorRequired]
+    public ThreeStateToggle Interaction { get; set; } = null!;
+
+    public string ImagePath
+    {
+        get;
+        private set;
+    } = NEITHER_SVG;
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Subscribe(Interaction.ValueChanged, _ => OnValueChanged());
+        OnValueChanged();
+    }
+
+    private void OnValueChanged()
+    {
+        ImagePath = Interaction.Value switch
+        {
+            false => MINUS_SVG,
+            true => PLUS_SVG,
+            null => NEITHER_SVG
+        };
+
+        StateHasChanged();
+    }
+    #endregion
+}

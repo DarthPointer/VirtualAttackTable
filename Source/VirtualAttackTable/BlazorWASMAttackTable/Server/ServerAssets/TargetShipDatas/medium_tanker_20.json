@@ -1,0 +1,24 @@
+{
+  "GRT": 6352.0,
+  "MaxHeightMeters": 45.117508,
+  "VerticalImageRange": {
+    "Start": 0.29589844,
+    "End": 0.9277344
+  },
+  "LengthMeters": 122.0,
+  "HorizontalImageRange": {
+    "Start": 0.07861328,
+    "End": 0.9213867
+  },
+  "DraughtMeters": 6.308424,
+  "MaxSpeedMpS": 5.1444564,
+  "TypeName": "medium_tanker_20",
+  "EnginePlacement": 1,
+  "IslandsPositions": 7,
+  "Superstructure": 0,
+  "Structures": [
+    0,
+    0,
+    2
+  ]
+}

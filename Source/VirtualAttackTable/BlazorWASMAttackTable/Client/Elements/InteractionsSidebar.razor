@@ -1,0 +1,108 @@
+﻿@using CallbackList
+@using BlazorWASMAttackTable.Client.Interactions
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@inherits SubscriptionDisposingElement
+
+<div id="flexcolumn;" style="overflow-y: scroll; overflow-x: hidden; height: 100%; width: 100%; background: rgb(220, 220, 220)">
+    <div style="position: sticky;
+            top: 0;
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;"
+        @onclick="SelectTableInteraction">
+
+        <img src="images/Registry.svg"
+            title="Attack Table"
+            id="interaction-selection-button"
+            style="
+                background: @(GetTableIcoBackground());
+                object-fit: contain;" />
+    </div>
+    
+    @foreach (IdentifyShipInteraction identifyShipInteraction in ParentControl.Interaction!.IdentifyShipInteractions)
+    {
+        <div id="interaction-selection-button"
+            @onclick="() => SelectIdentifyShipInteraction(identifyShipInteraction)"
+            style="background: @(GetIdentificationIcoBackground(identifyShipInteraction));">
+
+            <ShipIdentificationSelectionIco Interaction="@identifyShipInteraction" />
+        </div>
+    }
+
+    <div  
+        style="position: sticky; bottom: 0; background: inherit;
+            width: 100%;
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;">
+        <img @onclick="CreateNewIdentifyShipInteraction"
+            title="Create New Identification Tab"
+            id="interaction-selection-button" src="images/ThreeStateCheckbox/plus.svg" style="object-fit: contain;" />
+    </div>
+</div>
+
+@code {
+    #region Proeprties
+    [Parameter, EditorRequired]
+    public AppPage ParentControl { get; set; } = null!;
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Subscribe(ParentControl.SelectedIdentifyShipInteraction.ValueChanged, OnSelectedIdentifyShipInteractionChanged);
+        Subscribe(ParentControl.AttackTableIsSelected.ValueChanged, OnAttackTableIsSelectedChanged);
+        Subscribe(ParentControl.Interaction!.IdentifyShipInteractions.ListChanged, OnIdentifyShipInteractionsChanged);
+    }
+
+    private void SelectTableInteraction()
+    {
+        ParentControl.AttackTableIsSelected.Value = true;
+    }
+
+    private void SelectIdentifyShipInteraction(IdentifyShipInteraction identifyShipInteraction)
+    {
+        ParentControl.SelectedIdentifyShipInteraction.Value = identifyShipInteraction;
+        ParentControl.AttackTableIsSelected.Value = false;
+    }
+
+    private void OnSelectedIdentifyShipInteractionChanged(IdentifyShipInteraction? _)
+    {
+        if (ParentControl.AttackTableIsSelected.Value == false)
+            StateHasChanged();
+    }
+
+    private void CreateNewIdentifyShipInteraction()
+    {
+        ParentControl.Interaction!.StartNewIdentifyShipInteraction();
+    }
+
+    private void OnAttackTableIsSelectedChanged(bool _)
+    {
+        StateHasChanged();
+    }
+
+    private void OnIdentifyShipInteractionsChanged()
+    {
+        StateHasChanged();
+    }
+
+    private string GetTableIcoBackground() =>
+        GetSelectionIcoBackground(ParentControl.AttackTableIsSelected.Value);
+
+    private string GetIdentificationIcoBackground(IdentifyShipInteraction identifyShipInteraction) =>
+        GetSelectionIcoBackground(ParentControl.AttackTableIsSelected.Value == false && ParentControl.SelectedIdentifyShipInteraction.Value == identifyShipInteraction);
+
+    private string GetSelectionIcoBackground(bool isSelected) =>
+        isSelected ?
+            "rgb(0, 100, 200, 0.5)" :
+            "rgb(0, 0, 0, 0)";
+    #endregion
+}

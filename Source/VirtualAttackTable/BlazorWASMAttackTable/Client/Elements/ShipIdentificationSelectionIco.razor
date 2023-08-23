@@ -1,0 +1,71 @@
+﻿@using BlazorWASMAttackTable.Client
+@using BlazorWASMAttackTable.Client.Interactions
+@using BlazorWASMAttackTable.Client.Interactions.IdentificationInteractions
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@inherits SubscriptionDisposingElement
+
+<img src="@(GetIcoPath())"
+     title="@(GetIcoTitle())"
+     style="object-fit: contain; width: 100%; height: 100%;" />
+
+@code {
+    #region Properties
+    [Parameter, EditorRequired]
+    public IdentifyShipInteraction Interaction
+    {
+        get;
+        set;
+    } = null!;
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Subscribe(Interaction.FilteredShipDatasChanged, OnIcoSourceDataChanged);
+        Subscribe(Interaction.SelectedWrap.ValueChanged, (_) => OnIcoSourceDataChanged());
+    }
+
+    private void OnIcoSourceDataChanged()
+    {
+        StateHasChanged();
+    }
+
+    private string GetIcoPath()
+    {
+        SelectTargetShipDataWrapInteraction? shipWrapForIco = GetShipForIco();
+
+        if (shipWrapForIco != null)
+        {
+            return BlazorAttackTableLib.GetShipImagePath(shipWrapForIco.TargetShipData.TypeName);
+        }
+
+        return "images/QuestionMark.svg";
+    }
+
+    private SelectTargetShipDataWrapInteraction? GetShipForIco()
+    {
+        if (Interaction.SelectedWrap.Value != null && Interaction.FilteredShipDatas.Contains(Interaction.SelectedWrap.Value))
+            return Interaction.SelectedWrap.Value;
+
+        if (Interaction.FilteredShipDatas.Any())
+            return Interaction.FilteredShipDatas.First();
+
+        return null;
+    }
+
+    private string GetIcoTitle()
+    {
+        SelectTargetShipDataWrapInteraction? shipWrapForIco = GetShipForIco();
+
+        if (shipWrapForIco != null)
+        {
+            return shipWrapForIco.TargetShipData.TypeName;
+        }
+
+        return "No Match";
+    }
+    #endregion
+}

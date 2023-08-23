@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ShipDataGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"E:/UnityModding/WP Assets/Wolfpack/ExportedProject/Assets\"\r\n\"D:/Repos/VirtualAttackTable/Source/VirtualAttackTable/VirtualAttackTable/ShipAssets\""
+    }
+  }
+}

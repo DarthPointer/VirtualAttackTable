@@ -1,0 +1,24 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.Common
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@typeparam TParameter
+@typeparam TDefinitionKey
+@inherits SubscriptionDisposingElement
+
+<div class="flexcolumn" style="margin: 5px; width: calc(100% - 10px); height: auto; justify-content: center;">
+    <Combobox Interaction="Interaction.DefinitionKeySelection"/>
+
+    @if (Interaction.CanSetArbitraryValue)
+    {
+        <input @bind="DisplayValue" @bind:event="oninput" style="@BadInputStyleAffix" />
+    }
+    else
+    {
+        <input @bind="DisplayValue" disabled />
+    }
+</div>
+
+@code
+{
+    private string BadInputStyleAffix => BadInput ? "background: rgb(250, 250, 0, 0.8);" : "";
+}

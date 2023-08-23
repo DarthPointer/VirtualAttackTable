@@ -1,0 +1,31 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions.Options
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@inherits SubscriptionDisposingElement
+
+<div @onclick="@Interaction.Toggle">
+    <input type="radio" checked="@Interaction.IsSelected" />
+    @Interaction.OptionName
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public required IOptionInteraction Interaction { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Subscribe(Interaction.StateChanged, OnIsSelectedChanged);
+    }
+
+    private void Toggle()
+    {
+        Interaction.Toggle();
+    }
+
+    private void OnIsSelectedChanged()
+    {
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,87 @@
+﻿@using Blazored.Modal;
+@using Blazored.Modal.Services;
+@using CallbackList
+@using BlazorWASMAttackTable.Client.Interactions
+@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@inherits SubscriptionDisposingElement
+
+<tr id="attack-table-entry-row">
+    <td title="Set absolute dimensions from image" @onclick="RequestShipDimensionsFromImage">
+        <img id="attack-table-row-element" style="aspect-ratio: 2/1; object-fit: contain;" src="@BlazorAttackTableLib.GetShipImagePath(TargetShip.TargetShip.Data.TypeName)" />
+    </td>
+
+    <td>@TargetShip.TargetShip.Data.TypeName.Replace('_', ' ')</td>
+
+    <td><FloatParameterCell Interaction="TargetShip.Bearing"/></td>
+
+    <td><FloatParameterCell Interaction="TargetShip.AbsoluteHeight"/></td>
+    <td><FloatParameterCell Interaction="TargetShip.VisibleHeight"/></td>
+    <td><FloatParameterCell Interaction="TargetShip.AbsoluteLength"/></td>
+    <td><FloatParameterCell Interaction="TargetShip.VisibleLength"/></td>
+
+    <td><FloatParameterCell Interaction="TargetShip.TargetRange"/></td>
+
+    <td>
+        <div class="flexrow" style="height: 100px;">
+            <div style="width: 75%; justify-content: center; display: flex;">
+                <FloatParameterCell Interaction="TargetShip.AoB"/>
+            </div>
+            <div style="width: 25%;">
+                <SelectAoBQuarter Parameter="TargetShip.AoB.Parameter"/>
+            </div>
+        </div>
+    </td>
+
+    <td><FloatParameterCell Interaction="TargetShip.HullTime"/></td>
+    <td><FloatParameterCell Interaction="TargetShip.OneDegreeTime"/></td>
+
+    <td><FloatParameterCell Interaction="TargetShip.TargetSpeed" /></td>
+    <td><FloatParameterCell Interaction="TargetShip.AngularSpeed" /></td>
+
+    <td><FloatParameterCell Interaction="TargetShip.TorpedoSpeed"/></td>
+
+    <td><FloatParameterCell Interaction="TargetShip.BoatSpeed" /></td>
+
+    <td><FloatParameterCell Interaction="TargetShip.LeadAngle" /></td>
+
+    <td title="Remove target" @onclick="RemoveThisTarget"><img src="images/Cross.svg" style="object-fit: contain; height: 100%; width: 100%;"/></td>
+</tr>
+
+@code {
+    #region Properties
+    [CascadingParameter]
+    public IModalService Modal { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public TargetShipAlteredUnitsWrap TargetShip { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public AttackTableInteraction AttackTable { get; set; } = null!;
+    #endregion
+
+    #region Methods
+    private void RemoveThisTarget()
+    {
+        AttackTable.RemoveTargetShip(TargetShip);
+    }
+
+    private void RequestShipDimensionsFromImage()
+    {
+        ModalParameters modalParameters = new()
+        {
+            { nameof(ObservationDimensionsFromShipImage.TargetShip), TargetShip},
+            { nameof(ObservationDimensionsFromShipImage.HeightUnit), AttackTable.UnitsSelection.AbsoluteHeight.SelectedOption!.Value},
+            { nameof(ObservationDimensionsFromShipImage.LengthUnit), AttackTable.UnitsSelection.AbsoluteLength.SelectedOption!.Value},
+        };
+
+        ModalOptions modalOptions = new()
+        {
+            Size = ModalSize.Automatic
+        };
+
+        Modal.Show<ObservationDimensionsFromShipImage>("Select Dimensions for Size Observation", modalParameters, modalOptions);
+    }
+    #endregion
+}

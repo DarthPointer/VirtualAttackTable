@@ -1,0 +1,518 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="000_run-localhost.cmd" />
+    <None Remove="000_run-open.cmd" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="000_run-localhost.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="000_run-open.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.55.0" />
+    <PackageReference Include="Grpc.AspNetCore.Web" Version="2.55.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\BlazorWASMAttackTable.Client.csproj" />
+    <ProjectReference Include="..\Shared\BlazorWASMAttackTable.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ServerAssets\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_12.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_13.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_14.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_15.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_16.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_17.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_18.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_19.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_20.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_21.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_22.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_23.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_24.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_25.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_26.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_27.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_28.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_29.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_30.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_31.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_32.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_33.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_34.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_35.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_36.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_37.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_38.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_39.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_40.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_41.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_42.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_43.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_44.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_45.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_46.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_freighter_9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_12.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_13.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_14.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_15.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_16.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_17.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_18.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_19.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_20.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_21.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_22.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_23.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_24.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_25.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_26.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_27.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_28.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_29.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_30.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_31.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_32.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_33.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_34.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_35.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\heavy_tanker_9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_12.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_13.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_14.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_15.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_16.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_17.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_18.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_19.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_20.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_21.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_22.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_23.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_24.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_25.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_26.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_27.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_28.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_29.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_30.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_31.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_32.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_33.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_34.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_35.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_36.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_37.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\light_merchant_9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_10.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_11.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_12.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_13.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_14.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_15.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_16.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_17.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_18.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_19.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_20.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_21.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_22.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_23.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_24.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_25.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_26.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_27.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_28.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_29.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_30.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_31.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_32.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_33.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_34.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_35.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_6.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_7.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_8.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\medium_tanker_9.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\passenger_ship_1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\passenger_ship_2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\passenger_ship_3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\passenger_ship_4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ServerAssets\TargetShipDatas\passenger_ship_5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
+</Project>

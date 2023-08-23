@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option csharp_namespace = "BlazorWASMAttackTable.Shared.Protos";
+
+package TargetShipdDataSupplier;
+
+service TargetShipdDataSupplierService
+{
+	rpc ProvideDatas(TargetShipdDataLoadRequest) returns(TargetShipdDataLoadResponse);
+}
+
+message TargetShipdDataLoadRequest {}
+
+message TargetShipdDataLoadResponse 
+{
+	repeated TargetShipdDataLoadElement Datas = 1;
+}
+
+message TargetShipdDataLoadElement
+{
+	string typeName = 1;
+
+	float GRT = 2;
+
+	float maxHeightMeters = 3;
+	FloatRange verticalImageRange = 4;
+
+	float lengthMeters = 5;
+	FloatRange horizontalImageRange = 6;
+
+	float draughtMeters = 7;
+
+	float maxSpeedMpS = 8;
+
+	int32 enginePlacement = 9;
+	int32 islandsPositions = 10;
+	int32 superstructure = 11;
+
+	repeated int32 structures = 12;
+}
+
+message FloatRange
+{
+	float min = 1;
+	float max = 2;
+}

@@ -1,0 +1,1 @@
+dotnet BlazorWASMAttackTable.Server.dll --urls http://*:5000

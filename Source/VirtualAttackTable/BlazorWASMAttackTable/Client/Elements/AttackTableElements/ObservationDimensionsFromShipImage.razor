@@ -1,0 +1,194 @@
+﻿@using Blazored.Modal;
+@using System.Globalization;
+@using VirtualAttackTableLib
+@using BlazorWASMAttackTable.Client
+@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
+
+@implements IAsyncDisposable
+
+@inject IJSRuntime JS
+
+<div style="height: 80vh; width: 80vw;" class="flexrow">
+    <div style="width: calc(100% - 100px);" class="flexcolumn">
+        <div style="height: calc(100% - 50px); width: 100%; display: flex; align-items:center">
+            <div style="max-width: 100%; aspect-ratio: 2/1; max-height: 100% !important; position: relative;">
+                <img @ref=ShipImageElement
+                    src="@BlazorAttackTableLib.GetShipImagePath(TargetShip.TargetShip.Data.TypeName)"
+                    @onclick="OnImageMouseClick"
+                    @onmousemove="OnImageMouseMove"
+                    style="width: 100%; height: 100%;"/>
+
+                <div class="ship-image-vertical-guide" style="left: @RelativeLeftShipBorder%" />
+                <div class="ship-image-vertical-guide" style="left: @RelativeRightShipBorder%" />
+
+                <div class="ship-image-horizontal-guide" style="top: @RelativeTopShipBorder%" />
+                <div class="ship-image-horizontal-guide" style="top: @RelativeBottomShipBorder%" />
+
+                <div class="ship-image-vertical-guide" style="left: @CrosshairX%" />
+                <div class="ship-image-horizontal-guide" style="top: @CrosshairY%" />
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 100px;" class="flexcolumn">
+        <button class="@GetDimensionOptionButtonClass(TopIsSelected)" @onclick="TopHeightClick">@TopHeightString</button>
+        <button class="@GetDimensionOptionButtonClass(BottomIsSelected)" @onclick="BottomHeightClick">@BottomHeightString</button>
+        <button class="@GetDimensionOptionButtonClass(LeftIsSelected)" @onclick="LeftLengthClick">@LeftLengthString</button>
+        <button class="@GetDimensionOptionButtonClass(RightIsSelected)" @onclick="RightLengthClick">@RightLengthString</button>
+    </div>
+
+    
+</div>
+
+@code {
+    #region Proeprties
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
+    [Parameter, EditorRequired]
+    public TargetShipAlteredUnitsWrap TargetShip { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public LengthUnit HeightUnit { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public LengthUnit LengthUnit { get; set; } = null!;
+
+    private bool CrosshairFollowCursor { get; set; } = true;
+
+    private ElementReference ShipImageElement { get; set; }
+
+    private IJSInProcessObjectReference? ImageSizeAssistModule { get; set; }
+
+    private bool TopIsSelected { get; set; } = false;
+    private bool BottomIsSelected { get; set; } = false;
+    private bool LeftIsSelected { get; set; } = false;
+    private bool RightIsSelected { get; set; } = false;
+
+    private string RelativeLeftShipBorder => FloatToInvariantString(TargetShip.TargetShip.Data.HorizontalImageRange.Start * 100);
+    private string RelativeRightShipBorder => FloatToInvariantString(TargetShip.TargetShip.Data.HorizontalImageRange.End * 100);
+    private string RelativeTopShipBorder => FloatToInvariantString(TargetShip.TargetShip.Data.VerticalImageRange.Start * 100);
+    private string RelativeBottomShipBorder => FloatToInvariantString(TargetShip.TargetShip.Data.VerticalImageRange.End * 100);
+
+    private string CrosshairX => FloatToInvariantString(CrosshairRelativeScaledX * 100);
+    private string CrosshairY => FloatToInvariantString(CrosshairRelativeScaledY * 100);
+
+    private float CrosshairRelativeScaledX => MouseX / Width;
+    private float CrosshairRelativeScaledY => MouseY / Height;
+
+    private float BottomHeightMeters => Unlerp(TargetShip.TargetShip.Data.VerticalImageRange.End, TargetShip.TargetShip.Data.VerticalImageRange.Start, CrosshairRelativeScaledY) * TargetShip.TargetShip.Data.MaxHeightMeters;
+    private float TopHeightMeters => Unlerp(TargetShip.TargetShip.Data.VerticalImageRange.Start, TargetShip.TargetShip.Data.VerticalImageRange.End, CrosshairRelativeScaledY) * TargetShip.TargetShip.Data.MaxHeightMeters;
+    private float LeftLengthMeters => Unlerp(TargetShip.TargetShip.Data.HorizontalImageRange.Start, TargetShip.TargetShip.Data.HorizontalImageRange.End, CrosshairRelativeScaledX) * TargetShip.TargetShip.Data.LengthMeters;
+    private float RightLengthMeters => Unlerp(TargetShip.TargetShip.Data.HorizontalImageRange.End, TargetShip.TargetShip.Data.HorizontalImageRange.Start, CrosshairRelativeScaledX) * TargetShip.TargetShip.Data.LengthMeters;
+
+    private string BottomHeightString => $"Set lower height: {BlazorAttackTableLib.CustomUnitValueFormat(HeightUnit.FromMeters(BottomHeightMeters))}{HeightUnit.UnitName}";
+    private string TopHeightString => $"Set upper height: {BlazorAttackTableLib.CustomUnitValueFormat(HeightUnit.FromMeters(TopHeightMeters))}{HeightUnit.UnitName}";
+    private string LeftLengthString => $"Set left length: {BlazorAttackTableLib.CustomUnitValueFormat(LengthUnit.FromMeters(LeftLengthMeters))}{LengthUnit.UnitName}";
+    private string RightLengthString => $"Set right length: {BlazorAttackTableLib.CustomUnitValueFormat(LengthUnit.FromMeters(RightLengthMeters))}{LengthUnit.UnitName}";
+
+    private float MouseX { get; set; }
+    private float MouseY { get; set; }
+
+    private float Width { get; set; }
+    private float Height { get; set; }
+    #endregion
+
+    #region Methods
+    private void OnImageMouseClick(MouseEventArgs args)
+    {
+        CrosshairFollowCursor = !CrosshairFollowCursor;
+
+        if (CrosshairFollowCursor)
+            OnImageMouseMove(args);
+    }
+
+    private void OnImageMouseMove(MouseEventArgs args)
+    {
+        if (CrosshairFollowCursor)
+        {
+            MouseX = (float)args.OffsetX;
+            MouseY = (float)args.OffsetY;
+
+            float[] result = ImageSizeAssistModule!.Invoke<float[]>("GetElementBoudingBox", ShipImageElement);
+            Width = result[0];
+            Height = result[1];
+
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            ImageSizeAssistModule = await JS.InvokeAsync<IJSInProcessObjectReference>(
+                "import", "./Elements/AttackTableElements/ObservationDimensionsFromShipImage.razor.js");
+        }
+    }
+
+
+
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (ImageSizeAssistModule is not null)
+        {
+            await ImageSizeAssistModule.DisposeAsync();
+        }
+    }
+
+    private string FloatToInvariantString(float value)
+    {
+        return value.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private float Unlerp(float min, float max, float x)
+    {
+        return (x - min) / (max - min);
+    }
+
+    private string GetDimensionOptionButtonClass(bool isSelected) =>
+        isSelected ? "selected-dimension-option-button" : "no-class";
+
+    private void TopHeightClick()
+    {
+        TopIsSelected = true;
+        BottomIsSelected = false;
+
+        TargetShip.ArbitraryAbsoluteHeightMeters.Value = TopHeightMeters;
+
+        StateHasChanged();
+    }
+
+    private void BottomHeightClick()
+    {
+        BottomIsSelected = true;
+        TopIsSelected = false;
+
+        TargetShip.ArbitraryAbsoluteHeightMeters.Value = BottomHeightMeters;
+
+        StateHasChanged();
+    }
+
+    private void LeftLengthClick()
+    {
+        LeftIsSelected = true;
+        RightIsSelected = false;
+
+        TargetShip.ArbitraryAbsoluteLengthMeters.Value = LeftLengthMeters;
+
+        StateHasChanged();
+    }
+
+    private void RightLengthClick()
+    {
+        RightIsSelected = true;
+        LeftIsSelected = false;
+
+        TargetShip.ArbitraryAbsoluteLengthMeters.Value = RightLengthMeters;
+
+        StateHasChanged();
+    }
+    #endregion
+}

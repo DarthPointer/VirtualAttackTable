@@ -1,0 +1,12 @@
+﻿#interaction-selection-button {
+    margin: 5px;
+    aspect-ratio: 1/1;
+    width: calc(100% - 10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    #interaction-selection-button:hover {
+        outline: 2px solid rgb(0, 0, 255);
+    }

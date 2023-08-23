@@ -1,0 +1,163 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions
+@using BlazorWASMAttackTable.Client.Interactions.Common
+@using BlazorWASMAttackTable.Client.Elements
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using BlazorWASMAttackTable.Shared.Protos
+@using System.Diagnostics.CodeAnalysis;
+
+@inject TargetShipdDataSupplierService.TargetShipdDataSupplierServiceClient TargetShipdDataSupplierServiceClient;
+
+@inherits SubscriptionDisposingElement
+
+@page "/"
+
+@if (Interaction != null)
+{
+    <div class="flexrow" style="height: 100vh; width: 100vw">
+        <div style="
+                position: sticky;
+                top: 0;
+                left: 0;
+                width: 120px;
+                min-width: 120px;
+                max-width: 120px;
+                height: 100vh;">
+            <InteractionsSidebar
+                ParentControl="this"/>
+        </div>
+
+        <div style="width: calc(100% - 120px);">
+            @if (AttackTableIsSelected.Value == true)
+            {
+                <AttackTable Interaction="Interaction.AttackTable"/>
+            }
+            else
+            {
+                if (SelectedIdentifyShipInteraction.Value != null)
+                {
+                    <div class="flexcolumn" style="width: 100%; height: 100%;">
+
+                        <div style="
+                            display: flex;
+                            flex-direction: row-reverse;
+                            flex: 0 0 100px;
+                            align-items: center;
+                            background: rgb(240, 240, 240)">
+
+                            <img src="images/Cross.svg"
+                                title="Close this Identification Tab"
+                                id="identification-upper-tab-button"
+                                style="object-fit: contain;"
+                                @onclick="CloseCurrentIdentificationTabClick"/>
+
+                            <img src="images/CheckMark.svg"
+                                title="Add Selected Ship to Attack Table"
+                                id="identification-upper-tab-button"
+                                style="object-fit: contain;"
+                                @onclick="AcceptCurrentSelectedShip" />
+                        </div>
+
+                    
+                        <div style="margin: 5px;
+                            height: 0;
+                            flex: 1 0;">
+                            <ShipIndentification Interaction="SelectedIdentifyShipInteraction.Value" />
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}
+else
+{
+    <h1>Loading data, please wait</h1>
+}
+
+@code
+{
+    #region Fields
+    private UserSessionInteraction? _interaction;
+    #endregion
+
+    #region Properties
+    [DisallowNull]
+    public UserSessionInteraction? Interaction
+    {
+        get
+        {
+            return _interaction;
+        }
+        private set
+        {
+            // Only expect it set once and no change later.
+            if (_interaction == null)
+            {
+                _interaction = value;
+
+                Subscribe(_interaction!.IdentifyShipInteractions.ListChanged, OnIdentifyShipInteractionsListChanged);
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    public ValueInteraction<IdentifyShipInteraction?> SelectedIdentifyShipInteraction
+    {
+        get;
+        private init;
+    } = new(null);
+
+    public ValueInteraction<bool> AttackTableIsSelected
+    {
+        get;
+        private init;
+    } = new(true);
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        InitiateUserSessionInteractionCreation();
+
+        Subscribe(SelectedIdentifyShipInteraction.ValueChanged, OnSelectedIdentifyShipInteractionChanged);
+        Subscribe(AttackTableIsSelected.ValueChanged, OnAttackTableIsSelectedChanged);
+    }
+
+    private async void InitiateUserSessionInteractionCreation()
+    {
+        Interaction = await UserSessionInteraction.CreateAsync(TargetShipdDataSupplierServiceClient);
+    }
+
+    private void OnSelectedIdentifyShipInteractionChanged(IdentifyShipInteraction? _)
+    {
+        if (AttackTableIsSelected.Value == false)
+            StateHasChanged();
+    }
+
+    private void OnAttackTableIsSelectedChanged(bool _)
+    {
+        StateHasChanged();
+    }
+
+    private void OnIdentifyShipInteractionsListChanged()
+    {
+        if (SelectedIdentifyShipInteraction.Value != null && !Interaction!.IdentifyShipInteractions.Contains(SelectedIdentifyShipInteraction.Value))
+        {
+            SelectedIdentifyShipInteraction.Value = null;
+            AttackTableIsSelected.Value = true;
+        }
+    }
+
+    private void CloseCurrentIdentificationTabClick()
+    {
+        if (SelectedIdentifyShipInteraction.Value != null)
+            Interaction!.DropIdentifyShipInteraction(SelectedIdentifyShipInteraction.Value);
+    }
+
+    private void AcceptCurrentSelectedShip()
+    {
+        SelectedIdentifyShipInteraction.Value?.AcceptDataFromSelectedWrap();
+    }
+    #endregion
+}

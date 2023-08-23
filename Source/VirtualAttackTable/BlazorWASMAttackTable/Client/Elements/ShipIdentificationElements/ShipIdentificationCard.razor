@@ -1,0 +1,67 @@
+﻿@using VirtualAttackTableLib.AttackTarget
+@using VirtualAttackTableLib
+@using BlazorWASMAttackTable.Client.Interactions.IdentificationInteractions
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+
+@inherits SubscriptionDisposingElement
+
+<div class="flexcolumn" @onclick="Click" @ondblclick="DoubleClick"
+     style="background: @BackgroundColor">
+    <img width="300" height="150" src="@BlazorAttackTableLib.GetShipImagePath(TargetShipData.TypeName)" />
+
+    <p id="ship-data-entry" style="text-align:center">@TargetShipData.TypeName</p>
+
+    <div style="display:flex">
+        <div style="flex:50%">
+            <p id="ship-data-entry">GRT: @TargetShipData.GRT</p>
+            <p id="ship-data-entry">Draught: @(TargetShipData.DraughtMeters.ToString("f1"))m</p>
+            <p id="ship-data-entry">Max Speed: @(Units.Knot.FromMpS(TargetShipData.MaxSpeedMpS).ToString("f0"))kt</p>
+        </div>
+
+        <div style="flex:50%">
+            <p id="ship-data-entry">Max Height: @(TargetShipData.MaxHeightMeters.ToString("f1"))m</p>
+            <p id="ship-data-entry">Length: @(TargetShipData.LengthMeters.ToString("f1"))m</p>
+        </div>
+    </div>
+</div>
+
+@code {
+    #region Properties
+    [Parameter, EditorRequired]
+    public SelectTargetShipDataWrapInteraction TargetShipDataWrap
+    {
+        get;
+        set;
+    } = null!;
+
+    private TargetShipData TargetShipData => TargetShipDataWrap.TargetShipData;
+
+    private string BackgroundColor => TargetShipDataWrap.IsSelected.Value ?
+        "rgb(0, 100, 200, 0.5)" :
+        "rgb(0, 0, 0, 0)";
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        Subscribe(TargetShipDataWrap.IsSelected.ValueChanged, OnIsSelectedChanged);
+    }
+
+    private void Click()
+    {
+        TargetShipDataWrap.TriggerSelect();
+    }
+
+    private void DoubleClick()
+    {
+        TargetShipDataWrap.AcceptThisForAttackTable();
+    }
+
+    private void OnIsSelectedChanged(bool newValue)
+    {
+        StateHasChanged();
+    }
+    #endregion
+}

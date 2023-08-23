@@ -1,0 +1,25 @@
+{
+  "GRT": 13537.0,
+  "MaxHeightMeters": 38.836,
+  "VerticalImageRange": {
+    "Start": 0.49023438,
+    "End": 0.9160156
+  },
+  "LengthMeters": 162.0,
+  "HorizontalImageRange": {
+    "Start": 0.07714844,
+    "End": 0.92089844
+  },
+  "DraughtMeters": 7.1699867,
+  "MaxSpeedMpS": 6.6877933,
+  "TypeName": "passenger_ship_4",
+  "EnginePlacement": 0,
+  "IslandsPositions": 0,
+  "Superstructure": 2,
+  "Structures": [
+    0,
+    2,
+    2,
+    0
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "GRT": 8367.0,
+  "MaxHeightMeters": 34.990997,
+  "VerticalImageRange": {
+    "Start": 0.45214844,
+    "End": 0.92578125
+  },
+  "LengthMeters": 132.0,
+  "HorizontalImageRange": {
+    "Start": 0.078125,
+    "End": 0.92089844
+  },
+  "DraughtMeters": 6.550906,
+  "MaxSpeedMpS": 7.2022386,
+  "TypeName": "heavy_freighter_32",
+  "EnginePlacement": 0,
+  "IslandsPositions": 2,
+  "Superstructure": 0,
+  "Structures": [
+    0,
+    1,
+    2
+  ]
+}

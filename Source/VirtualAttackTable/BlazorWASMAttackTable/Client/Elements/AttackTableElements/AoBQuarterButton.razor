@@ -1,0 +1,68 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using VirtualAttackTableLib.AttackTarget;
+@using VirtualAttackTableLib.TargetShipParameter;
+
+@inherits SubscriptionDisposingElement
+
+<div style="height: 100%; width: 100%; position: relative;" @onclick="Select">
+    <svg style="width: @LinearImageScalePercent%; aspect-ratio: 1/1; margin: 2px;
+        position: absolute; @CornerAlignementPositionPropertiesString;
+        color: @FillColor;"
+         viewBox="0 0 100 100">
+
+        <circle style="fill:currentColor;stroke-width:0;stroke-dasharray:none"
+                id="path5202"
+                cx="0"
+                cy="100"
+                r="100" />
+
+    </svg>
+</div>
+
+@code {
+    #region Properties
+    [Parameter, EditorRequired]
+    public AoBParameter Parameter { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public AoBQuarter RepresentedQuarter { get; set; }
+
+    private bool IsSelected
+    {
+        get
+        {
+            if (Parameter.ActiveDefinition is ArbitraryAoBDefinition)
+                return RepresentedQuarter.IsLeft() == Parameter.AoBQuarter.IsLeft();
+
+            return Parameter.AoBQuarter == RepresentedQuarter;
+        }
+    }
+
+    private int LinearImageScalePercent => IsSelected ? 100 : 70;
+
+    private string CornerAlignementPositionPropertiesString =>
+        RepresentedQuarter switch
+        {
+            AoBQuarter.AheadLeft => "right: 0; bottom: 0; transform: rotate(-90deg)",
+            AoBQuarter.AheadRight => "left: 0; bottom: 0; transform: rotate(0deg)",
+            AoBQuarter.AsternRight => "left: 0; top: 0; transform: rotate(90deg)",
+            AoBQuarter.AsternLeft => "right: 0; top: 0; transform: rotate(180deg)",
+
+            _ => throw new Exception($"{GetType()} has an unexpected proepty value {nameof(RepresentedQuarter)}: {RepresentedQuarter}")
+        };
+
+    private string FillColor => RepresentedQuarter.IsLeft() ? "red" : "green";
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        Subscribe(Parameter.ParameterChanged, StateHasChanged);
+    }
+
+    private void Select()
+    {
+        Parameter.AoBQuarter = RepresentedQuarter;
+    }
+    #endregion
+}
