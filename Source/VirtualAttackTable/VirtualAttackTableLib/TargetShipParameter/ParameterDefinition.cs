@@ -10,6 +10,8 @@ namespace VirtualAttackTableLib.TargetShipParameter
     public interface IParameterDefinition
     {
         void Update();
+
+        IReadOnlyList<IParameter> DependencyParameters { get; }
     }
 
     public class ParameterDefinition<TValue> : IParameterDefinition

@@ -1,4 +1,6 @@
-﻿@using Blazored.Modal;
+﻿@using VirtualAttackTableLib.TargetShipParameter
+@using BlazorWASMAttackTable.Client.Interactions.Common;
+@using Blazored.Modal;
 @using Blazored.Modal.Services;
 @using CallbackList
 @using BlazorWASMAttackTable.Client.Interactions
@@ -8,25 +10,25 @@
 @inherits SubscriptionDisposingElement
 
 <tr id="attack-table-entry-row">
-    <td title="Set absolute dimensions from image" @onclick="RequestShipDimensionsFromImage">
+    <td style="height: inherit;" title="Set absolute dimensions from image" @onclick="RequestShipDimensionsFromImage">
         <img id="attack-table-row-element" style="aspect-ratio: 2/1; object-fit: contain;" src="@BlazorAttackTableLib.GetShipImagePath(TargetShip.TargetShip.Data.TypeName)" />
     </td>
 
-    <td>@TargetShip.TargetShip.Data.TypeName.Replace('_', ' ')</td>
+    <td style="height: inherit;">@TargetShip.TargetShip.Data.TypeName.Replace('_', ' ')</td>
 
-    <td><FloatParameterCell Interaction="TargetShip.Bearing"/></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.Bearing" OwningEntry="this" /></td>
 
-    <td><FloatParameterCell Interaction="TargetShip.AbsoluteHeight"/></td>
-    <td><FloatParameterCell Interaction="TargetShip.VisibleHeight"/></td>
-    <td><FloatParameterCell Interaction="TargetShip.AbsoluteLength"/></td>
-    <td><FloatParameterCell Interaction="TargetShip.VisibleLength"/></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.AbsoluteHeight" OwningEntry="this" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.VisibleHeight" OwningEntry="this" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.AbsoluteLength" OwningEntry="this" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.VisibleLength" OwningEntry="this" /></td>
 
-    <td><FloatParameterCell Interaction="TargetShip.TargetRange"/></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TargetRange" OwningEntry="this" /></td>
 
-    <td>
+    <td style="height: inherit;">
         <div class="flexrow" style="height: 100px;">
             <div style="width: 75%; justify-content: center; display: flex;">
-                <FloatParameterCell Interaction="TargetShip.AoB"/>
+                <FloatParameterCell Interaction="TargetShip.AoB" OwningEntry="this" />
             </div>
             <div style="width: 25%;">
                 <SelectAoBQuarter Parameter="TargetShip.AoB.Parameter"/>
@@ -34,22 +36,26 @@
         </div>
     </td>
 
-    <td><FloatParameterCell Interaction="TargetShip.HullTime"/></td>
-    <td><FloatParameterCell Interaction="TargetShip.OneDegreeTime"/></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.HullTime" OwningEntry="this" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.OneDegreeTime" OwningEntry="this" /></td>
 
-    <td><FloatParameterCell Interaction="TargetShip.TargetSpeed" /></td>
-    <td><FloatParameterCell Interaction="TargetShip.AngularSpeed" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TargetSpeed" OwningEntry="this" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.AngularSpeed" OwningEntry="this" /></td>
 
-    <td><FloatParameterCell Interaction="TargetShip.TorpedoSpeed"/></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TorpedoSpeed" OwningEntry="this" /></td>
 
-    <td><FloatParameterCell Interaction="TargetShip.BoatSpeed" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.BoatSpeed" OwningEntry="this" /></td>
 
-    <td><FloatParameterCell Interaction="TargetShip.LeadAngle" /></td>
+    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.LeadAngle" OwningEntry="this" /></td>
 
-    <td title="Remove target" @onclick="RemoveThisTarget"><img src="images/Cross.svg" style="object-fit: contain; height: 100%; width: 100%;"/></td>
+    <td style="height: inherit;" title="Remove target" @onclick="RemoveThisTarget"><img src="images/Cross.svg" style="object-fit: contain; height: 100%; width: 100%;" /></td>
 </tr>
 
 @code {
+    #region Fields
+    private IParameterDefinition? _definitionToHighlightParameters;
+    #endregion
+
     #region Properties
     [CascadingParameter]
     public IModalService Modal { get; set; } = null!;
@@ -59,9 +65,32 @@
 
     [Parameter, EditorRequired]
     public AttackTableInteraction AttackTable { get; set; } = null!;
+
+    public IParameterDefinition? DefinitionToHighlightParameters
+    {
+        get
+        {
+            return _definitionToHighlightParameters;
+        }
+        set
+        {
+            if (_definitionToHighlightParameters != value)
+            {
+                _definitionToHighlightParameters = value;
+                DefinitionToHighlightParametersChanged();
+            }
+        }
+    }
+
+    public ValueInteraction<IReadOnlySet<IParameter>> ParametersToHighlight { get; } = new(new HashSet<IParameter>());
     #endregion
 
     #region Methods
+    protected override void OnParametersSet()
+    {
+        ParametersToHighlight.Value = new HashSet<IParameter>();
+    }
+
     private void RemoveThisTarget()
     {
         AttackTable.RemoveTargetShip(TargetShip);
@@ -82,6 +111,18 @@
         };
 
         Modal.Show<ObservationDimensionsFromShipImage>("Select Dimensions for Size Observation", modalParameters, modalOptions);
+    }
+
+    private void DefinitionToHighlightParametersChanged()
+    {
+        if (DefinitionToHighlightParameters == null)
+        {
+            ParametersToHighlight.Value = new HashSet<IParameter>();
+        }
+        else
+        {
+            ParametersToHighlight.Value = new HashSet<IParameter>(DefinitionToHighlightParameters.DependencyParameters);
+        }
     }
     #endregion
 }
