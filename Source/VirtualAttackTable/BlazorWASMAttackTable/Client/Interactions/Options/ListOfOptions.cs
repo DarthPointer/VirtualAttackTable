@@ -21,13 +21,15 @@
         #region Constructors
         public ListOfOptions(IEnumerable<Option<TOption>> options, string interactionHeader)
         {
-            Options = options.Select(option => new OptionInteraction<TOption>(option, ToggleOption)).ToList();
+            Options = options.Select(option => new OptionInteraction<TOption>(option, ToggleOption, this)).ToList();
             InteractionHeader = interactionHeader;
         }
         #endregion
 
         #region Methods
         protected abstract void ToggleOption(OptionInteraction<TOption> option);
+
+        public virtual void PreviewOption(Option<TOption> option, bool preview) { }
         #endregion
     }
 

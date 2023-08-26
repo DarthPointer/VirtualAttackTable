@@ -3,10 +3,16 @@
 
 @typeparam TParameter
 @typeparam TDefinitionKey
+
+@implements IAsyncDisposable
 @inherits SubscriptionDisposingElement
 
+@inject IJSRuntime JS;
+
 <div class="flexcolumn" style="background-color: @BackgroundStyleEntry; width: 100%; height: 100%; justify-content: center;"
-    @onmouseenter="OnMouseEnterThisCell" @onmouseleave="OnMouseLeaveThisCell">
+    @onmouseenter="OnMouseEnterThisCell" @onmouseleave="OnMouseLeaveThisCell"
+    @onclick="OnMouseClick"
+    @ref="RootDiv">
     <div class="flexcolumn" style="margin: 5px; width: calc(100% - 10px); height: auto;">
         <Combobox Interaction="Interaction.DefinitionKeySelection"/>
 
@@ -25,5 +31,7 @@
 {
     private string BadInputStyleAffix => BadInput ? "background-color: rgb(250, 250, 0, 0.8);" : "";
 
-    private string BackgroundStyleEntry => Highlight ? "rgb(120, 120, 255)" : "transparent";
+    private string BackgroundStyleEntry => Highlight ? "rgb(0, 100, 200, 0.5)" : "transparent";
+
+    private ElementReference RootDiv { get; set; }
 }

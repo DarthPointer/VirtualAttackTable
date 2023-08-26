@@ -35,7 +35,7 @@ namespace VirtualAttackTableLib.TargetShipParameter
         #region Methods
         private void OnAoBQuarterChanged()
         {
-            foreach(IParameterDefinition definition in AllDefinitions)
+            foreach(IParameterDefinition definition in AllDefinitions.Values)
             {
                 definition.Update();
             }
