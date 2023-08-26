@@ -4,6 +4,7 @@
 @using VirtualAttackTableLib
 @using BlazorWASMAttackTable.Client
 @using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
+@using VirtualAttackTableLib.AttackTarget;
 
 @implements IAsyncDisposable
 
@@ -163,6 +164,7 @@
         BottomIsSelected = false;
 
         TargetShip.ArbitraryAbsoluteHeightMeters.Value = TopHeightMeters;
+        TargetShip.AbsoluteHeight.Parameter.ActiveDefinitionKey = AbsoluteHeightDefinition.Arbitrary;
 
         StateHasChanged();
     }
@@ -173,6 +175,7 @@
         TopIsSelected = false;
 
         TargetShip.ArbitraryAbsoluteHeightMeters.Value = BottomHeightMeters;
+        TargetShip.AbsoluteHeight.Parameter.ActiveDefinitionKey = AbsoluteHeightDefinition.Arbitrary;
 
         StateHasChanged();
     }
@@ -183,6 +186,7 @@
         RightIsSelected = false;
 
         TargetShip.ArbitraryAbsoluteLengthMeters.Value = LeftLengthMeters;
+        TargetShip.AbsoluteLength.Parameter.ActiveDefinitionKey = AbsoluteLengthDefinition.Arbitrary;
 
         StateHasChanged();
     }
@@ -193,6 +197,7 @@
         LeftIsSelected = false;
 
         TargetShip.ArbitraryAbsoluteLengthMeters.Value = RightLengthMeters;
+        TargetShip.AbsoluteLength.Parameter.ActiveDefinitionKey = AbsoluteLengthDefinition.Arbitrary;
 
         StateHasChanged();
     }
