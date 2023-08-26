@@ -1,5 +1,6 @@
 ﻿@using Blazored.Modal;
 @using System.Globalization;
+@using Blazored.Modal.Services;
 @using VirtualAttackTableLib
 @using BlazorWASMAttackTable.Client
 @using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
@@ -194,6 +195,31 @@
         TargetShip.ArbitraryAbsoluteLengthMeters.Value = RightLengthMeters;
 
         StateHasChanged();
+    }
+
+    /// <summary>
+    /// A strong-typed wrap for a <see cref="IModalService.Show{TComponent}(string, ModalParameters, ModalOptions)"/> for external calls.
+    /// Always sets <see cref="ModalOptions.Size"/> to <see cref="ModalSize.Automatic"/>.
+    /// </summary>
+    /// <param name="modalService"></param>
+    /// <param name="modalOptions"></param>
+    /// <param name="targetShipWrap"></param>
+    /// <param name="lengthUnit"></param>
+    /// <param name="heightUnit"></param>
+    /// <returns></returns>
+    public static IModalReference Show(IModalService modalService, ModalOptions modalOptions,
+        TargetShipAlteredUnitsWrap targetShipWrap, LengthUnit lengthUnit, LengthUnit heightUnit)
+    {
+        modalOptions.Size = ModalSize.Automatic;
+
+        ModalParameters modalParameters = new()
+        {
+            { nameof(TargetShip), targetShipWrap },
+            { nameof(LengthUnit), lengthUnit },
+            { nameof(HeightUnit), heightUnit }
+        };
+
+        return modalService.Show<ObservationDimensionsFromShipImage>("Select Dimensions for Size Observation", modalParameters, modalOptions);
     }
     #endregion
 }

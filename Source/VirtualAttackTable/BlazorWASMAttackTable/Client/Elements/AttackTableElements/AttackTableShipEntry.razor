@@ -98,19 +98,9 @@
 
     private void RequestShipDimensionsFromImage()
     {
-        ModalParameters modalParameters = new()
-        {
-            { nameof(ObservationDimensionsFromShipImage.TargetShip), TargetShip},
-            { nameof(ObservationDimensionsFromShipImage.HeightUnit), AttackTable.UnitsSelection.AbsoluteHeight.SelectedOption!.Value},
-            { nameof(ObservationDimensionsFromShipImage.LengthUnit), AttackTable.UnitsSelection.AbsoluteLength.SelectedOption!.Value},
-        };
-
-        ModalOptions modalOptions = new()
-        {
-            Size = ModalSize.Automatic
-        };
-
-        Modal.Show<ObservationDimensionsFromShipImage>("Select Dimensions for Size Observation", modalParameters, modalOptions);
+        ObservationDimensionsFromShipImage.Show(Modal, new(), TargetShip,
+            AttackTable.UnitsSelection.AbsoluteLength.SelectedOption.Value!.Value,
+            AttackTable.UnitsSelection.AbsoluteHeight.SelectedOption.Value!.Value);
     }
 
     private void DefinitionToHighlightParametersChanged()
