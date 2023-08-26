@@ -12,13 +12,13 @@ namespace BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
             await base.SetParametersAsync(parameters);
         }
 
-        protected ISubscriptionHandle Subscribe<TDelegate>(ICallbackListManager<TDelegate> callbackListManager, TDelegate @delegate)
+        protected ISubscriptionHandle Subscribe<TDelegate>(ISubscribableCallbackListManager<TDelegate> callbackListManager, TDelegate @delegate)
             where TDelegate : Delegate
         {
             return (this as ISubscriptionDisposingElement).Subscribe(callbackListManager, @delegate);
         }
 
-        protected ISubscriptionHandle WeakSubscribe<TDelegate>(ICallbackListManager<TDelegate> callbackListManager, WeakSubscriptionStorage weakSubscriptionStorage, TDelegate @delegate)
+        protected ISubscriptionHandle WeakSubscribe<TDelegate>(ISubscribableCallbackListManager<TDelegate> callbackListManager, WeakSubscriptionStorage weakSubscriptionStorage, TDelegate @delegate)
             where TDelegate : Delegate
         {
             return (this as ISubscriptionDisposingElement).WeakSubscribe(callbackListManager, weakSubscriptionStorage, @delegate);

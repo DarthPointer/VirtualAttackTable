@@ -67,8 +67,8 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             AbsoluteLength = new(TargetShip.AbsoluteLengthMeters, GenerateOptions(TargetShip.AbsoluteLengthMeters.GetPresentDefinitionKeys(), _absoluteLengthDefinitionDescriptions), unitsSelection.AbsoluteLength);
             VisibleLength = new(TargetShip.VisibleLengthRadians, GenerateOptions(TargetShip.VisibleLengthRadians.GetPresentDefinitionKeys()), unitsSelection.VisibleLength);
 
-            ArbitraryAbsoluteHeightMeters = AbsoluteHeight.Parameter.AllDefinitions.OfType<ArbitraryValueParameterDefinition<float>>().First();
-            ArbitraryAbsoluteLengthMeters = AbsoluteLength.Parameter.AllDefinitions.OfType<ArbitraryValueParameterDefinition<float>>().First();
+            ArbitraryAbsoluteHeightMeters = AbsoluteHeight.Parameter.AllDefinitions.Values.OfType<ArbitraryValueParameterDefinition<float>>().First();
+            ArbitraryAbsoluteLengthMeters = AbsoluteLength.Parameter.AllDefinitions.Values.OfType<ArbitraryValueParameterDefinition<float>>().First();
 
             TargetRange = new(TargetShip.TargetRangeMeters, GenerateOptions(TargetShip.TargetRangeMeters.GetPresentDefinitionKeys(), _targetRangeDefinitionDescriptions), unitsSelection.TargetRange);
 

@@ -17,7 +17,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
 
         #region Properties
         private IListForSingleOption<IUnit> AlteredUnitSource { get; }
-        protected IUnit CurrentUnit => AlteredUnitSource.SelectedOption?.Value ??
+        protected IUnit CurrentUnit => AlteredUnitSource.SelectedOption.Value?.Value ??
             throw (new InvalidOperationException($"{GetType()} can not get current unit because " +
                 $"its unit source has {nameof(AlteredUnitSource.SelectedOption)} of null."));
         public TParameter Parameter { get; }
@@ -85,13 +85,13 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             IEnumerable<Option<TDefinitionKey>> options, IListForSingleOption<IUnit> unitSource)
         {
             AlteredUnitSource = unitSource;
-            AlteredUnitSource.SelectedOptionChanged.Subscribe(OnUnitChanged);
+            AlteredUnitSource.SelectedOption.ValueChanged.Subscribe(OnUnitChanged);
 
             Parameter = parameter;
             Parameter.ParameterChanged.Subscribe(OnParameterChanged);
 
             DefinitionKeySelection = new(options, "Definition");
-            DefinitionKeySelection.SelectedOptionChanged.Subscribe(SetDefinitionKey);
+            DefinitionKeySelection.SelectedOption.ValueChanged.Subscribe(SetDefinitionKey);
         }
         #endregion
 
@@ -113,9 +113,9 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             }
         }
 
-        private void SetDefinitionKey(Option<TDefinitionKey>? _)
+        private void SetDefinitionKey(IOption<TDefinitionKey>? _)
         {
-            Parameter.ActiveDefinitionKey = DefinitionKeySelection.SelectedOption!.Value;
+            Parameter.ActiveDefinitionKey = DefinitionKeySelection.SelectedOption.Value!.Value;
         }
 
         private void OnUnitChanged(IOption<IUnit>? _)

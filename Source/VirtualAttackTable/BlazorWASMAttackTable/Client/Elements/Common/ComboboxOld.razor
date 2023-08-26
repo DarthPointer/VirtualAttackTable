@@ -1,0 +1,62 @@
+﻿@using BlazorWASMAttackTable.Shared.StatefulEnumeration
+@using BlazorWASMAttackTable.Client.Interactions.Options;
+
+<select @onchange="OnChange">
+    @if (Interaction.AllowNoOption)
+    {
+        <option value="0">- None -</option>
+    }
+
+    @{
+        int optionCode = 1;
+        foreach (IOptionInteraction optionInteraction in Interaction.Options)
+        {
+            if (optionInteraction.IsSelected)
+            {
+                <option value="@optionCode" title="@optionInteraction.OptionDescription" selected>@optionInteraction.OptionName</option>
+            }
+            else
+            {
+                <option value="@optionCode" title="@optionInteraction.OptionDescription">@optionInteraction.OptionName</option>
+            }
+
+            optionCode++;
+        }
+    }
+</select>
+
+@code {
+    [Parameter, EditorRequired]
+    public IListForSingleOption Interaction { get; set; } = null!;
+
+    private Dictionary<int, IOptionInteraction> OptionsMap { get; } = new();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        OptionsMap.Clear();
+
+        Interaction.Options.ForEach(
+            (option, index) => OptionsMap.Add(index, option),
+            startIndex: 1).Enumerate();
+    }
+
+    private void OnChange(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value as string, out int optionCode))
+        {
+            if (optionCode == 0 && Interaction.AllowNoOption)
+            {
+                Interaction.SelectNoOption();
+                return;
+            }
+
+            if (OptionsMap.TryGetValue(optionCode, out IOptionInteraction? option) && option.IsSelected == false)
+            {
+                option.Toggle();
+                return;
+            }
+        }
+    }
+}

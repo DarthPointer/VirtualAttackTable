@@ -1,62 +1,136 @@
-﻿@using BlazorWASMAttackTable.Shared.StatefulEnumeration
-@using BlazorWASMAttackTable.Client.Interactions.Options;
+﻿@using BlazorWASMAttackTable.Client.Interactions.Options;
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal;
 
-<select @onchange="OnChange">
-    @if (Interaction.AllowNoOption)
+@inherits SubscriptionDisposingElement
+
+<div @onclick="OnMainBoxClick" class="combobox-main-box" style="z-index: @ZIndex">
+    <div class="combobox-main-box-text">
+    @if (Interaction.SelectedOption.Value == null)
     {
-        <option value="0">- None -</option>
+        @NoOption
     }
-
-    @{
-        int optionCode = 1;
-        foreach (IOptionInteraction optionInteraction in Interaction.Options)
-        {
-            if (optionInteraction.IsSelected)
-            {
-                <option value="@optionCode" title="@optionInteraction.OptionDescription" selected>@optionInteraction.OptionName</option>
-            }
-            else
-            {
-                <option value="@optionCode" title="@optionInteraction.OptionDescription">@optionInteraction.OptionName</option>
-            }
-
-            optionCode++;
-        }
+    else
+    {
+        @Interaction.SelectedOption.Value.OptionName
     }
-</select>
+    </div>
+
+    @if (DisplayDropdown)
+    {
+        <div class="combobox-dropdown-box" @onclick:stopPropagation="true">
+            @if (Interaction.AllowNoOption)
+            {
+                <div class="combobox-dropdown-entry" @onclick="OnNoOptionClick">@NoOption</div>
+            }
+
+            @foreach (IOptionInteraction option in Interaction.Options)
+            {
+                <div class="combobox-dropdown-entry" @onclick="() => OnOptionClick(option)"
+                    @onmouseenter="() => OnMouseEnterOption(option)"
+                    @onmouseleave="() => OnMouseLeaveOption(option)"
+                >
+                    @option.OptionName
+                </div>
+            }
+        </div>
+    }
+</div>
 
 @code {
+    #region Consts
+    private const string NoOption = "--No Option--";
+    #endregion
+
+    #region Fields
+    private bool _displayDropdown;
+    #endregion
+
+    #region Properties
     [Parameter, EditorRequired]
     public IListForSingleOption Interaction { get; set; } = null!;
 
-    private Dictionary<int, IOptionInteraction> OptionsMap { get; } = new();
+    private bool DisplayDropdown
+    {
+        get
+        {
+            return _displayDropdown;
+        }
+        set
+        {
+            if (_displayDropdown != value)
+            {
+                _displayDropdown = value;
 
+                if (!_displayDropdown)
+                {
+                    ClearPreviewedOption();
+                }
+
+                StateHasChanged();
+            }
+        }
+    }
+
+    private IOptionInteraction? PreviewedOption { get; set; }
+
+    private int ZIndex => DisplayDropdown ? 100 : 0;
+    #endregion
+
+    #region Methods
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        OptionsMap.Clear();
-
-        Interaction.Options.ForEach(
-            (option, index) => OptionsMap.Add(index, option),
-            startIndex: 1).Enumerate();
+        Subscribe(Interaction.SelectedOption.ValueChanged, OnSelectedOptionChanged);
     }
 
-    private void OnChange(ChangeEventArgs e)
+    private void OnSelectedOptionChanged(IOption? option)
     {
-        if (int.TryParse(e.Value as string, out int optionCode))
-        {
-            if (optionCode == 0 && Interaction.AllowNoOption)
-            {
-                Interaction.SelectNoOption();
-                return;
-            }
+        StateHasChanged();
+    }
 
-            if (OptionsMap.TryGetValue(optionCode, out IOptionInteraction? option) && option.IsSelected == false)
-            {
-                option.Toggle();
-                return;
-            }
+    private void OnMainBoxClick()
+    {
+        DisplayDropdown = !DisplayDropdown;
+    }
+
+    private void OnNoOptionClick()
+    {
+        DisplayDropdown = false;
+        Interaction.SelectNoOption();
+    }
+
+    private void OnOptionClick(IOptionInteraction option)
+    {
+        DisplayDropdown = false;
+
+        if (!option.IsSelected)
+        {
+            option.Toggle();
         }
     }
+
+    private void OnMouseEnterOption(IOptionInteraction option)
+    {
+        PreviewOption(option);
+    }
+
+    private void OnMouseLeaveOption(IOptionInteraction option)
+    {
+        if (option == PreviewedOption)
+            ClearPreviewedOption();
+    }
+
+    private void PreviewOption(IOptionInteraction option)
+    {
+        PreviewedOption = option;
+        option.Preview(true);
+    }
+
+    private void ClearPreviewedOption()
+    {
+        PreviewedOption?.Preview(false);
+        PreviewedOption = null;
+    }
+    #endregion
 }

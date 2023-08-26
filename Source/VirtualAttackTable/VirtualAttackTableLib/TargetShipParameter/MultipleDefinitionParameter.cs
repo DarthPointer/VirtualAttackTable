@@ -68,7 +68,7 @@ namespace VirtualAttackTableLib.TargetShipParameter
             init;
         } = new();
 
-        public IEnumerable<ParameterDefinition<TValue>> AllDefinitions => Definitions.Values;
+        public IReadOnlyDictionary<TDefinitionKey, ParameterDefinition<TValue>> AllDefinitions => Definitions;
 
         /// <summary>
         /// Fired when a different <see cref="ActiveDefinition"/> is set or its <see cref="ParameterDefinition{TValue}.CurrentState"/> or <see cref="ParameterDefinition{TValue}.CurrentValue"/> are changed.

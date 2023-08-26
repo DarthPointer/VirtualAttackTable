@@ -1,8 +1,16 @@
-﻿using CallbackList;
+﻿using BlazorWASMAttackTable.Client.Interactions.Options;
+using CallbackList;
 
 namespace BlazorWASMAttackTable.Client.Interactions.Common
 {
-    public class ValueInteraction<T>
+    public interface IReadOnlyValueInteraction<out T>
+    {
+        public T Value { get; }
+
+        public ISubscribableCallbackListManager<Action<T>> ValueChanged { get; }
+    }
+
+    public class ValueInteraction<T> : IReadOnlyValueInteraction<T>
     {
         #region Fields
         private T _value;
@@ -25,6 +33,8 @@ namespace BlazorWASMAttackTable.Client.Interactions.Common
         {
             get;
         } = new();
+
+        ISubscribableCallbackListManager<Action<T>> IReadOnlyValueInteraction<T>.ValueChanged => ValueChanged;
         //public event Action<T>? ValueChanged;
         #endregion
 

@@ -33,8 +33,7 @@ namespace BlazorWASMAttackTable.Client.Interactions
             private init
             {
                 _superstructure = value;
-                _superstructure.SelectedOptionChanged.Subscribe(OnFilterValueChanged);
-                //_superstructure.SelectedOptionChanged += OnFilterValueChanged;
+                _superstructure.SelectedOption.ValueChanged.Subscribe(OnFilterValueChanged);
             }
         }
 
@@ -47,8 +46,7 @@ namespace BlazorWASMAttackTable.Client.Interactions
             private init
             {
                 _enginePlacement = value;
-                _enginePlacement.SelectedOptionChanged.Subscribe(OnFilterValueChanged);
-                //_enginePlacement.SelectedOptionChanged += OnFilterValueChanged;
+                _enginePlacement.SelectedOption.ValueChanged.Subscribe(OnFilterValueChanged);
             }
         }
 
@@ -208,8 +206,8 @@ namespace BlazorWASMAttackTable.Client.Interactions
         {
             TargetShipData targetShipData = wrap.TargetShipData;
 
-            if (Superstructure.SelectedOption != null && Superstructure.SelectedOption.Value != targetShipData.Superstructure) return false;
-            if (EnginePlacement.SelectedOption != null && EnginePlacement.SelectedOption.Value != targetShipData.EnginePlacement) return false;
+            if (Superstructure.SelectedOption.Value != null && Superstructure.SelectedOption.Value.Value != targetShipData.Superstructure) return false;
+            if (EnginePlacement.SelectedOption.Value != null && EnginePlacement.SelectedOption.Value.Value != targetShipData.EnginePlacement) return false;
 
             if (BowIsland.Value != null && BowIsland.Value != targetShipData.IslandsPositions.HasFlag(IslandsPositions.Bow)) return false;
             if (MidIsland.Value != null && MidIsland.Value != targetShipData.IslandsPositions.HasFlag(IslandsPositions.Mid)) return false;

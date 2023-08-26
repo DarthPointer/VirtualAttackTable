@@ -7,7 +7,7 @@ namespace BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
     {
         private static ConditionalWeakTable<ISubscriptionDisposingElement, SubscriptionContainer> Containers = new();
 
-        public ISubscriptionHandle Subscribe<TDelegate>(ICallbackListManager<TDelegate> callbackListManager, TDelegate @delegate)
+        public ISubscriptionHandle Subscribe<TDelegate>(ISubscribableCallbackListManager<TDelegate> callbackListManager, TDelegate @delegate)
             where TDelegate : Delegate
         {
             ISubscriptionHandle result = callbackListManager.Subscribe(@delegate);
@@ -15,7 +15,7 @@ namespace BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
             return result;
         }
 
-        public ISubscriptionHandle WeakSubscribe<TDelegate>(ICallbackListManager<TDelegate> callbackListManager, WeakSubscriptionStorage weakSubscriptionStorage, TDelegate @delegate)
+        public ISubscriptionHandle WeakSubscribe<TDelegate>(ISubscribableCallbackListManager<TDelegate> callbackListManager, WeakSubscriptionStorage weakSubscriptionStorage, TDelegate @delegate)
             where TDelegate : Delegate
         {
             ISubscriptionHandle result = callbackListManager.WeakSubscribe(weakSubscriptionStorage, @delegate);

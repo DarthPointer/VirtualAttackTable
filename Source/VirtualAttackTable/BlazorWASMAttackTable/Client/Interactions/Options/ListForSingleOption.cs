@@ -1,22 +1,23 @@
-﻿using CallbackList;
+﻿using BlazorWASMAttackTable.Client.Interactions.Common;
+using CallbackList;
+using System.Reflection;
 
 namespace BlazorWASMAttackTable.Client.Interactions.Options
 {
     public interface IListForSingleOption : IListOfOptions
     {
         bool AllowNoOption { get; }
-        IOption? SelectedOption { get; }
+
+        IReadOnlyValueInteraction<IOption?> SelectedOption { get; }
 
         void SelectNoOption();
     }
 
     public interface IListForSingleOption<out TOption> : IListForSingleOption
     {
-        new IOption<TOption>? SelectedOption { get; }
+        new IReadOnlyValueInteraction<IOption<TOption>?> SelectedOption { get; }
 
-        IOption? IListForSingleOption.SelectedOption => SelectedOption;
-
-        ISubscribableCallbackListManager<Action<IOption<TOption>?>> SelectedOptionChanged { get; }
+        IReadOnlyValueInteraction<IOption?> IListForSingleOption.SelectedOption => SelectedOption;
     }
 
     public class ListForSingleOption<TOption> : ListOfOptions<TOption>, IListForSingleOption<TOption>
@@ -24,27 +25,12 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
     {
         #region Fields
         private OptionInteraction<TOption>? _selectedOptionInteraction;
-        private Option<TOption>? _selectedOption;
         #endregion
 
         #region Properties
-        public Option<TOption>? SelectedOption
-        {
-            get
-            {
-                return _selectedOption;
-            }
-            set
-            {
-                if (_selectedOption != value)
-                {
-                    _selectedOption = value;
-                    SelectedOptionChanged.CreateFireCall()?.Invoke(_selectedOption);
-                }
-            }
-        }
+        public IReadOnlyValueInteraction<IOption<TOption>?> SelectedOption => SelectedOptionInternal;
 
-        IOption<TOption>? IListForSingleOption<TOption>.SelectedOption => SelectedOption;
+        private ValueInteraction<Option<TOption>?> SelectedOptionInternal { get; } = new(null);
 
         private OptionInteraction<TOption>? SelectedOptionInteraction
         {
@@ -57,7 +43,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
                 if (_selectedOptionInteraction != value)
                 {
                     _selectedOptionInteraction = value;
-                    SelectedOption = _selectedOptionInteraction?.Option;
+                    SelectedOptionInternal.Value = _selectedOptionInteraction?.Option;
                 }
             }
         }
@@ -68,12 +54,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
             private init;
         }
 
-        public CallbackListManager<Option<TOption>?> SelectedOptionChanged
-        {
-            get;
-        } = new();
-
-        ISubscribableCallbackListManager<Action<IOption<TOption>?>> IListForSingleOption<TOption>.SelectedOptionChanged => SelectedOptionChanged;
+        public ValueInteraction<Option<TOption>?> PreviewedOption { get; } = new(null);
         #endregion
 
         #region Constructors
@@ -88,7 +69,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
             else
             {
                 if (!Options.Any())
-                    throw new ArgumentException($"{nameof(ListForSingleOption<TOption>)} can't be constructed with {nameof(allowNoOption)} if it is created with no options ({nameof(Options)} had 0 elements).", nameof(allowNoOption));
+                    throw new ArgumentException($"{nameof(ListForSingleOption<TOption>)} can't be constructed with {nameof(allowNoOption)} = false if it is created with no options ({nameof(Options)} had 0 elements).", nameof(allowNoOption));
 
                 var firstOption = Options.First();
 
@@ -107,8 +88,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
                 if (!AllowNoOption) return;
 
                 toggledOption.SetIsSelected(false);
-                // I trust the docs say it actually is null both for reference types and Nullable<ValueType>.
-                SelectedOption = default;
+                SelectedOptionInternal.Value = null;
 
                 return;
             }
@@ -119,14 +99,29 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
                 option.SetIsSelected(option == toggledOption);
             }
 
-            SelectedOption = toggledOption.Option;
+            SelectedOptionInternal.Value = toggledOption.Option;
         }
 
         public void SelectNoOption()
         {
             if (AllowNoOption)
             {
-                SelectedOption = null;
+                SelectedOptionInternal.Value = null;
+            }
+        }
+
+        public override void PreviewOption(Option<TOption> option, bool preview)
+        {
+            if (preview)
+            {
+                PreviewedOption.Value = option;
+                return;
+            }
+
+            if (!preview && PreviewedOption.Value == option)
+            {
+                PreviewedOption.Value = null;
+                return;
             }
         }
         #endregion
