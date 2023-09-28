@@ -1,12 +1,13 @@
-﻿@using BlazorWASMAttackTable.Client.Interactions.Options;
+﻿@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions;
+@using BlazorWASMAttackTable.Client.Interactions.Options;
 
 <tr style="background: rgb(220, 220, 220); position: sticky; top: 0; z-index: 1000;">
     <td style="width: 200px;"/>
     <td style="width: 100px;">Type Code</td>
 
-    @foreach(IListForSingleOption unitsSelection in Interaction.UnitOptionLists)
+    @foreach (CollapsableTableColumnHeaderWrapData columnHeaderData in ColumnHeaderDatas)
     {
-        <td><div id="units-selection-header-cell"><TitledUnitsSelection Interaction="unitsSelection" /></div></td>
+        <CollapsableTableColumnHeaderWrap Data="columnHeaderData"/>
     }
 
     <td style="width: 50px"></td>
@@ -17,6 +18,74 @@
     #region Parameters
     [Parameter, EditorRequired]
     public BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions.UnitsSelection Interaction { get; set; } = null!;
+
+    private IReadOnlyList<CollapsableTableColumnHeaderWrapData> ColumnHeaderDatas { get; set; } = null!;
+    #endregion
+
+    #region Methods
+    protected override void OnParametersSet()
+    {
+        CollapseColumnsFlags collapseColumnsFlags = Interaction.OwningAttackTable.CollapseColumnsFlags;
+
+        ColumnHeaderDatas = new List<CollapsableTableColumnHeaderWrapData>
+        {
+            new() {IsCollapsed = collapseColumnsFlags.CollapseBearing,
+                UnitSelection = Interaction.Bearing,
+                IcoPath = "images/TableRowIcos/Bearing.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseAbsoluteHeight,
+                UnitSelection = Interaction.AbsoluteHeight,
+                IcoPath = "images/TableRowIcos/AbsoluteHeight.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseVisibleHeight,
+                UnitSelection = Interaction.VisibleHeight,
+                IcoPath = "images/TableRowIcos/VisibleHeight.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseAbsoluteLength,
+                UnitSelection = Interaction.AbsoluteLength,
+                IcoPath = "images/TableRowIcos/AbsoluteLength.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseVisibleLength,
+                UnitSelection = Interaction.VisibleLength,
+                IcoPath = "images/TableRowIcos/VisibleLength.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseTargetRange,
+                UnitSelection = Interaction.TargetRange,
+                IcoPath = "images/TableRowIcos/TargetRange.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseAoB,
+                UnitSelection = Interaction.AoB,
+                IcoPath = "images/TableRowIcos/AoB.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseHullTime,
+                UnitSelection = Interaction.HullTime,
+                IcoPath = "images/TableRowIcos/HullTime.svg"},
+            
+            new() {IsCollapsed = collapseColumnsFlags.CollapseOneDegreeTime,
+                UnitSelection = Interaction.OneDegreeTime,
+                IcoPath = "images/TableRowIcos/OneDegreeTime.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseTargetSpeed,
+                UnitSelection = Interaction.TargetSpeed,
+                IcoPath = "images/TableRowIcos/TargetSpeed.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseAngularTargetSpeed,
+                UnitSelection = Interaction.AngularTargetSpeed,
+                IcoPath = "images/TableRowIcos/AngularTargetSpeed.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseTorpedoSpeed,
+                UnitSelection = Interaction.TorpedoSpeed,
+                IcoPath = "images/TableRowIcos/TorpedoSpeed.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseBoatSpeed,
+                UnitSelection = Interaction.BoatSpeed,
+                IcoPath = "images/TableRowIcos/BoatSpeed.svg"},
+
+            new() {IsCollapsed = collapseColumnsFlags.CollapseLeadAngle,
+                UnitSelection = Interaction.LeadAngle,
+                IcoPath = "images/TableRowIcos/LeadAngle.svg"},
+        };
+    }
     #endregion
 }
 

@@ -78,7 +78,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             OneDegreeTime = new(TargetShip.OneDegreeTimeSeconds, GenerateOptions(TargetShip.OneDegreeTimeSeconds.GetPresentDefinitionKeys()), unitsSelection.OneDegreeTime);
 
             TargetSpeed = new(TargetShip.TargetSpeedMpS, GenerateOptions(TargetShip.TargetSpeedMpS.GetPresentDefinitionKeys(), _targetSpeedDefinitionDescriptions), unitsSelection.TargetSpeed);
-            AngularSpeed = new(TargetShip.AngularSpeedRpS, GenerateOptions(TargetShip.AngularSpeedRpS.GetPresentDefinitionKeys(), _angularSpeedDefinitionDescriptions), unitsSelection.AngularSpeed);
+            AngularSpeed = new(TargetShip.AngularSpeedRpS, GenerateOptions(TargetShip.AngularSpeedRpS.GetPresentDefinitionKeys(), _angularSpeedDefinitionDescriptions), unitsSelection.AngularTargetSpeed);
 
             TorpedoSpeed = new(TargetShip.TorpedoSpeedMpS, GenerateStringOptions(TargetShip.TorpedoSpeedMpS.GetPresentDefinitionKeys()), unitsSelection.TorpedoSpeed);
 

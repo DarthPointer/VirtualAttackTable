@@ -16,13 +16,16 @@ namespace BlazorWASMAttackTable.Client.Interactions
             private init;
         }
 
-        public UnitsSelection UnitsSelection { get; } = new();
+        public CollapseColumnsFlags CollapseColumnsFlags { get; } = new();
+
+        public UnitsSelection UnitsSelection { get; }
         #endregion
 
         #region Constructors
         public AttackTableInteraction()
         {
             TargetShips = new();
+            UnitsSelection = new(this);
         }
         #endregion
 

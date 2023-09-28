@@ -1,0 +1,46 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions.Common;
+@using BlazorWASMAttackTable.Client.Interactions.Options;
+
+
+
+@if(IsCollapsed.Value)
+{
+    <td width="100px" @onclick="OnClick">
+        <img src="@IcoPath" style="object-fit:contain; width: 100%; border-width: 3px 0; border-color: rgb(0, 0, 255); border-style: solid;"/>
+    </td>   
+}
+else
+{
+    <td @onclick="OnClick">
+        <div id="units-selection-header-cell">
+            <TitledUnitsSelection Interaction="UnitSelection" />
+        </div>
+    </td>
+}
+
+
+@code {
+    [Parameter, EditorRequired]
+    public CollapsableTableColumnHeaderWrapData Data { get; set; } = null!;
+
+    public ValueInteraction<bool> IsCollapsed => Data.IsCollapsed;
+
+    public IListForSingleOption UnitSelection => Data.UnitSelection;
+
+    public string IcoPath => Data.IcoPath;
+
+    private string TDWidthAppendix
+    {
+        get
+        {
+            return Data.IsCollapsed.Value ?
+                "width=\"30px\"":
+                "";
+        }
+    }
+
+    private void OnClick()
+    {
+        IsCollapsed.Value = !IsCollapsed.Value;
+    }
+}

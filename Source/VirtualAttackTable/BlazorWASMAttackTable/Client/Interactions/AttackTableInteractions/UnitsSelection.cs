@@ -29,6 +29,8 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         #endregion
 
         #region Properties
+        public AttackTableInteraction OwningAttackTable { get; }
+
         private List<IListForSingleOption> _unitOptionLists = new List<IListForSingleOption>();
         public IReadOnlyList<IListForSingleOption> UnitOptionLists => _unitOptionLists;
 
@@ -47,7 +49,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         public ListForSingleOption<TimeUnit> OneDegreeTime { get; }
 
         public ListForSingleOption<SpeedUnit> TargetSpeed { get; }
-        public ListForSingleOption<AngularSpeedUnit> AngularSpeed { get; }
+        public ListForSingleOption<AngularSpeedUnit> AngularTargetSpeed { get; }
 
         public ListForSingleOption<SpeedUnit> TorpedoSpeed { get; }
 
@@ -57,8 +59,10 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         #endregion
 
         #region Constructors
-        public UnitsSelection()
+        public UnitsSelection(AttackTableInteraction owningAttackTable)
         {
+            OwningAttackTable = owningAttackTable;
+
             Bearing = CreateUnitOptionsList(_angleUnits, "Bearing");
 
             AbsoluteHeight = CreateUnitOptionsList(_lengthUnits, "Absolute Height");
@@ -74,7 +78,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             OneDegreeTime = CreateUnitOptionsList(_timeUnits, "One Degree Time");
 
             TargetSpeed = CreateUnitOptionsList(_speedUnits, "Target Speed");
-            AngularSpeed = CreateUnitOptionsList(_angularSpeedUnits, "Angular Target Speed");
+            AngularTargetSpeed = CreateUnitOptionsList(_angularSpeedUnits, "Angular Target Speed");
 
             TorpedoSpeed = CreateUnitOptionsList(_speedUnits, "Torpedo Speed");
 
