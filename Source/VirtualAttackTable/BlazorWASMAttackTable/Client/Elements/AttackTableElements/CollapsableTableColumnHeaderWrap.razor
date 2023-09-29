@@ -29,16 +29,6 @@ else
 
     public string IcoPath => Data.IcoPath;
 
-    private string TDWidthAppendix
-    {
-        get
-        {
-            return Data.IsCollapsed.Value ?
-                "width=\"30px\"":
-                "";
-        }
-    }
-
     private void OnClick()
     {
         IsCollapsed.Value = !IsCollapsed.Value;
