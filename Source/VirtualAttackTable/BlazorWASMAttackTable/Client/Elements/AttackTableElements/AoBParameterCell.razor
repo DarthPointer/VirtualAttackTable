@@ -1,0 +1,22 @@
+﻿@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions;
+
+<div class="flexrow" style="height: 100px;">
+    <div style="width: 75%; justify-content: center; display: flex;">
+        <FloatParameterCell Interaction="Parameter" OwningEntry="OwningEntry" />
+    </div>
+    <div style="width: 25%; display: flex; align-items: center; justify-content: center;">
+        <div style="aspect-ratio: 1/1; max-height: 90%; width: 100%; display: flex; align-items: center; justify-content: center;">
+            <div style="aspect-ratio: 1/1; height: 100%; max-width: 100%;">
+                <SelectAoBQuarter Parameter="Parameter.Parameter" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public AlteredUnitAoBParameterInteraction Parameter { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public AttackTableShipEntry OwningEntry { get; set; } = null!;
+}
