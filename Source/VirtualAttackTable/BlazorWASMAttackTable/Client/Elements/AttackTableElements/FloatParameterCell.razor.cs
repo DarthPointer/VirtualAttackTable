@@ -16,8 +16,6 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         private bool _badInput = false;
         private string _displayValue = "";
 
-        private bool _highlight = false;
-
         private bool _highlightingParametersForActiveDefinition;
         private IParameterDefinition? _previewedDefinition;
         #endregion
@@ -62,22 +60,6 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
                 if (_badInput != value)
                 {
                     _badInput = value;
-                    StateHasChanged();
-                }
-            }
-        }
-
-        private bool Highlight
-        {
-            get
-            {
-                return _highlight;
-            }
-            set
-            {
-                if (_highlight != value)
-                {
-                    _highlight = value;
                     StateHasChanged();
                 }
             }
@@ -134,16 +116,9 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
             base.OnParametersSet();
 
             Subscribe(Interaction.ParameterChanged, OnParameterChanged);
-            Subscribe(OwningEntry.ParametersToHighlight.ValueChanged, OnOwningEntryParametersToHighlightChanged);
             Subscribe(Interaction.DefinitionKeySelection.PreviewedOption.ValueChanged, OnDefinitionPreviewedValueChanged);
             //Subscribe(Interaction.DefinitionKeySelection.SelectedOption.ValueChanged, OnSelectedDefinitionChanged);
             OnParameterChanged();
-            OnOwningEntryParametersToHighlightChanged(OwningEntry.ParametersToHighlight.Value);
-        }
-
-        private void OnOwningEntryParametersToHighlightChanged(IReadOnlySet<IParameter> parametersToHighlight)
-        {
-            Highlight = parametersToHighlight.Contains(Interaction.Parameter);
         }
 
         private void OnParameterChanged()

@@ -1,0 +1,16 @@
+﻿@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal;
+@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions;
+
+
+@typeparam TParameter
+@typeparam TDefinitionKey
+
+@inherits CollapsableFloatParameterCell<TParameter, TDefinitionKey>
+
+<div style="height: 100%; width: 100%; background-color: @BackgroundStyleEntry;">
+    <FloatParameterCell Interaction="Interaction" OwningEntry="OwningEntry"/>
+</div>
+
+@code {
+    private string BackgroundStyleEntry => Highlight ? "rgb(0, 100, 200, 0.5)" : "transparent";
+}

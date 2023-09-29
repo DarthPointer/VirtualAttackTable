@@ -1,11 +1,12 @@
-﻿@using VirtualAttackTableLib.TargetShipParameter
+﻿@using VirtualAttackTableLib.AttackTarget;
+@using VirtualAttackTableLib.TargetShipParameter;
 @using BlazorWASMAttackTable.Client.Interactions.Common;
 @using Blazored.Modal;
 @using Blazored.Modal.Services;
-@using CallbackList
-@using BlazorWASMAttackTable.Client.Interactions
-@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
-@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using CallbackList;
+@using BlazorWASMAttackTable.Client.Interactions;
+@using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions;
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal;
 
 @inherits SubscriptionDisposingElement
 
@@ -16,30 +17,48 @@
 
     <td style="height: inherit;">@TargetShip.TargetShip.Data.TypeName.Replace('_', ' ')</td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.Bearing" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.Bearing" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<BearingDefinition>" TDefinitionKey="BearingDefinition" /></td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.AbsoluteHeight" OwningEntry="this" /></td>
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.VisibleHeight" OwningEntry="this" /></td>
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.AbsoluteLength" OwningEntry="this" /></td>
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.VisibleLength" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.AbsoluteHeight" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<AbsoluteHeightDefinition>" TDefinitionKey="AbsoluteHeightDefinition"/></td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TargetRange" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.VisibleHeight" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<VisibleHeightDefinition>" TDefinitionKey="VisibleHeightDefinition"/></td>
+
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.AbsoluteLength" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<AbsoluteLengthDefinition>" TDefinitionKey="AbsoluteLengthDefinition"/></td>
+
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.VisibleLength" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<VisibleLengthDefinition>" TDefinitionKey="VisibleLengthDefinition"/></td>
+
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.TargetRange" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<TargetRangeDefinition>" TDefinitionKey="TargetRangeDefinition"/></td>
 
     <td style="height: inherit;">
         <AoBParameterCell Parameter="TargetShip.AoB" OwningEntry="this"/>
     </td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.HullTime" OwningEntry="this" /></td>
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.OneDegreeTime" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.HullTime" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<HullTimeDefinition>" TDefinitionKey="HullTimeDefinition"/></td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TargetSpeed" OwningEntry="this" /></td>
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.AngularSpeed" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.OneDegreeTime" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<OneDegreeTimeDefinition>" TDefinitionKey="OneDegreeTimeDefinition"/></td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TorpedoSpeed" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.TargetSpeed" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<TargetSpeedDefinition>" TDefinitionKey="TargetSpeedDefinition"/></td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.BoatSpeed" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.AngularSpeed" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<AngularSpeedDefinition>" TDefinitionKey="AngularSpeedDefinition"/></td>
 
-    <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.LeadAngle" OwningEntry="this" /></td>
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.TorpedoSpeed" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<string>" TDefinitionKey="string"/></td>
+
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.BoatSpeed" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<BoatSpeedDefinition>" TDefinitionKey="BoatSpeedDefinition"/></td>
+
+    <td style="height: inherit;"><TrivialFloatParameterCell Interaction="TargetShip.LeadAngle" OwningEntry="this"
+        TParameter="AlteredUnitParameterInteraction<LeadAngleDefinition>" TDefinitionKey="LeadAngleDefinition"/></td>
 
     <td style="height: inherit;" title="Remove target" @onclick="RemoveThisTarget"><img src="images/Cross.svg" style="object-fit: contain; height: 100%; width: 100%;" /></td>
 </tr>
