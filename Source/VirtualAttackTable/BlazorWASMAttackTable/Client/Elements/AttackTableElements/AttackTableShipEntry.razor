@@ -25,13 +25,17 @@
 
     <td style="height: inherit;"><FloatParameterCell Interaction="TargetShip.TargetRange" OwningEntry="this" /></td>
 
-    <td style="height: inherit;">
+    <td style="height: inherit; align-items: center;">
         <div class="flexrow" style="height: 100px;">
             <div style="width: 75%; justify-content: center; display: flex;">
                 <FloatParameterCell Interaction="TargetShip.AoB" OwningEntry="this" />
             </div>
-            <div style="width: 25%;">
-                <SelectAoBQuarter Parameter="TargetShip.AoB.Parameter"/>
+            <div style="width: 25%; display: flex; align-items: center; justify-content: center;">
+                <div style="aspect-ratio: 1/1; max-height: 90%; width: 100%; display: flex; align-items: center; justify-content: center;">
+                    <div style="aspect-ratio: 1/1; height: 100%; max-width: 100%;">
+                        <SelectAoBQuarter Parameter="TargetShip.AoB.Parameter" />
+                    </div>
+                </div>
             </div>
         </div>
     </td>
