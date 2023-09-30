@@ -20,6 +20,8 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         [Parameter, EditorRequired]
         public TParameter Interaction { get; set; } = null!;
 
+        protected string BackgroundStyleEntry => Highlight ? "rgb(0, 100, 200, 0.5)" : "transparent";
+
         protected bool Highlight
         {
             get
