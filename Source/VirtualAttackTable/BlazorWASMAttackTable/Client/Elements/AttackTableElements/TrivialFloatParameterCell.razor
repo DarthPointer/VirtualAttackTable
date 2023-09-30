@@ -1,11 +1,12 @@
-﻿@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal;
+﻿@using VirtualAttackTableLib.TargetShipParameter;
+
+@using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal;
 @using BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions;
 
 
-@typeparam TParameter
-@typeparam TDefinitionKey
+@typeparam TDefinitionKey where TDefinitionKey : notnull
 
-@inherits CollapsableFloatParameterCell<TParameter, TDefinitionKey>
+@inherits CollapsableFloatParameterCell<AlteredUnitParameterInteraction<TDefinitionKey>, TDefinitionKey>
 
 <div style="height: 100%; width: 100%; background-color: @BackgroundStyleEntry;">
     <FloatParameterCell Interaction="Interaction" OwningEntry="OwningEntry"/>
