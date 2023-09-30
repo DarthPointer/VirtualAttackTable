@@ -3,7 +3,7 @@
 
 @inherits SubscriptionDisposingElement
 
-<div @onclick="OnMainBoxClick" class="combobox-main-box" style="z-index: @ZIndex">
+<div @onclick="OnMainBoxClick" @onclick:stopPropagation="true" class="combobox-main-box" style="z-index: @ZIndex">
     <div class="combobox-main-box-text">
     @if (Interaction.SelectedOption.Value == null)
     {
