@@ -30,6 +30,14 @@ namespace BlazorWASMAttackTable.Client.Saving
             return result;
         }
 
+        //public static UserSessionInteraction CreateSessionFromSave(Save save)
+        //{
+        //    UserSessionInteraction result = new();
+
+        //    return result;
+        //}
+
+        #region Save
         private static IdentificationState CreateIdentificationSave(IdentifyShipInteraction identifyShipInteraction)
         {
             return new()
@@ -120,5 +128,9 @@ namespace BlazorWASMAttackTable.Client.Saving
                 ArbitraryValue = parameter.AllDefinitions.Values.First(def => def is ArbitraryValueParameterDefinition<float>).CurrentValue
             };
         }
+        #endregion
+
+        #region Load
+        #endregion
     }
 }

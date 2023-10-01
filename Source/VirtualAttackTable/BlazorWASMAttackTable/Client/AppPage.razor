@@ -1,4 +1,5 @@
-﻿@using BlazorWASMAttackTable.Client.Interactions
+﻿@using BlazorWASMAttackTable.Client.AsyncLoading;
+@using BlazorWASMAttackTable.Client.Interactions
 @using BlazorWASMAttackTable.Client.Interactions.Common
 @using BlazorWASMAttackTable.Client.Elements
 @using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
@@ -171,7 +172,11 @@ else
 
     private async void InitiateUserSessionInteractionCreation()
     {
-        Interaction = await UserSessionInteraction.CreateAsync(TargetShipdDataSupplierServiceClient);
+        AsyncLoadedData.TargetShipDatas.SetValue(
+            (await TargetShipdDataSupplierServiceClient.ProvideDatasAsync(new()))
+            .Datas.Select(buffer => buffer.ToData()).ToList());
+
+        Interaction = new UserSessionInteraction(await AsyncLoadedData.TargetShipDatas.ItemTask);
     }
 
     private void OnSelectedIdentifyShipInteractionChanged(IdentifyShipInteraction? _)
