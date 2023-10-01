@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace BlazorWASMAttackTable.Client.Saving
 {
@@ -6,6 +7,6 @@ namespace BlazorWASMAttackTable.Client.Saving
     {
         public string versionCode = string.Empty;
 
-        
+        public JToken session = new JObject();
     }
 }

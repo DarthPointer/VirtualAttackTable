@@ -2,6 +2,10 @@
 {
     public class Session
     {
-        public List<IdentificationFilters> FilterTabs { get; set; } = new();
+        public List<IdentificationState> IdentificationTabs { get; set; } = new();
+
+        public ParameterUnits ParameterUnits { get; set; } = new();
+
+        public List<TargetShipEntry> TargetShipEntries { get; set; } = new();
     }
 }
