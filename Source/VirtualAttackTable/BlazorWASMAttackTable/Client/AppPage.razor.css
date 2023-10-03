@@ -1,9 +1,9 @@
-﻿#identification-upper-tab-button {
+﻿.upper-tab-button {
     height: calc(100% - 10px);
     aspect-ratio: 1/1;
     margin: 5px;
 }
 
-    #identification-upper-tab-button:hover {
+    .upper-tab-button:hover {
         background: rgb(0, 100, 200, 0.5);
     }

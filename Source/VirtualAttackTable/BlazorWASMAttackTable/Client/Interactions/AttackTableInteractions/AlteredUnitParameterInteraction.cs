@@ -91,6 +91,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             Parameter.ParameterChanged.Subscribe(OnParameterChanged);
 
             DefinitionKeySelection = new(options, "Definition");
+            DefinitionKeySelection.Options.FirstOrDefault(opt => opt.Value.Equals(parameter.ActiveDefinitionKey))?.Toggle();
             DefinitionKeySelection.SelectedOption.ValueChanged.Subscribe(SetDefinitionKey);
         }
         #endregion

@@ -1,11 +1,16 @@
-﻿@using BlazorWASMAttackTable.Client.Interactions
+﻿@using BlazorWASMAttackTable.Client.AsyncLoading;
+@using BlazorWASMAttackTable.Client.Interactions
 @using BlazorWASMAttackTable.Client.Interactions.Common
 @using BlazorWASMAttackTable.Client.Elements
 @using BlazorWASMAttackTable.Client.Elements.SubscriptionDisposal
+@using BlazorWASMAttackTable.Client.Saving;
 @using BlazorWASMAttackTable.Shared.Protos
 @using System.Diagnostics.CodeAnalysis;
+@using Newtonsoft.Json;
+@using System.Text;
 
 @inject TargetShipdDataSupplierService.TargetShipdDataSupplierServiceClient TargetShipdDataSupplierServiceClient;
+@inject IJSRuntime JS
 
 @inherits SubscriptionDisposingElement
 
@@ -29,7 +34,31 @@
         <div style="width: calc(100% - 120px);">
             @if (AttackTableIsSelected.Value == true)
             {
-                <AttackTable Interaction="Interaction.AttackTable"/>
+                <div class="flexcolumn" style="width: 100%; height: 100%">
+                    <div style="
+                            display: flex;
+                            flex-direction: row-reverse;
+                            flex: 0 0 100px;
+                            height: 100px;
+                            align-items: center;
+                            background: rgb(240, 240, 240)">
+
+                        <img src="images/OpenIconic/data-transfer-download-blue.svg"
+                             title="Save session to file"
+                             class="upper-tab-button"
+                             style="object-fit: contain;"
+                             @onclick="SaveSessionStateToFile" />
+                        
+                        <div class="upper-tab-button" style="position: relative">
+                            <img src="images/OpenIconic/data-transfer-upload-blue.svg"
+                                style="position: absolute; x: 0; y: 0; width: 100%; height: 100%; object-fit: contain"/>
+
+                            <InputFile style="position: absolute; x: 0; y: 0; width: 100%; height: 100%; opacity: 0" OnChange="OnUploadFileChanged"/>
+                        </div>
+                    </div>
+
+                    <AttackTable Interaction="Interaction.AttackTable"/>
+                </div>
             }
             else
             {
@@ -41,18 +70,19 @@
                             display: flex;
                             flex-direction: row-reverse;
                             flex: 0 0 100px;
+                            height: 100px;
                             align-items: center;
                             background: rgb(240, 240, 240)">
 
                             <img src="images/Cross.svg"
                                 title="Close this Identification Tab"
-                                id="identification-upper-tab-button"
+                                class="upper-tab-button"
                                 style="object-fit: contain;"
                                 @onclick="CloseCurrentIdentificationTabClick"/>
 
                             <img src="images/CheckMark.svg"
                                 title="Add Selected Ship to Attack Table"
-                                id="identification-upper-tab-button"
+                                 class="upper-tab-button"
                                 style="object-fit: contain;"
                                 @onclick="AcceptCurrentSelectedShip" />
                         </div>
@@ -74,14 +104,33 @@ else
     <h1>Loading data, please wait</h1>
 }
 
+<script>
+    window.downloadFileFromStream = async (fileName, contentStreamReference) => {
+        const arrayBuffer = await contentStreamReference.arrayBuffer();
+        const blob = new Blob([arrayBuffer]);
+        const url = URL.createObjectURL(blob);
+        const anchorElement = document.createElement('a');
+        anchorElement.href = url;
+        anchorElement.download = fileName ?? '';
+        anchorElement.click();
+        anchorElement.remove();
+        URL.revokeObjectURL(url);
+    }
+</script>
+
+
 @code
 {
+    #region Consts
+    private const string SAVE_SESSION_FILE_NAME = "BlazorAttackTable";
+    #endregion
+
     #region Fields
     private UserSessionInteraction? _interaction;
     #endregion
 
     #region Properties
-    [DisallowNull]
+
     public UserSessionInteraction? Interaction
     {
         get
@@ -90,12 +139,14 @@ else
         }
         private set
         {
-            // Only expect it set once and no change later.
-            if (_interaction == null)
+            if (_interaction != value)
             {
                 _interaction = value;
 
-                Subscribe(_interaction!.IdentifyShipInteractions.ListChanged, OnIdentifyShipInteractionsListChanged);
+                if (_interaction != null)
+                {
+                    Subscribe(_interaction!.IdentifyShipInteractions.ListChanged, OnIdentifyShipInteractionsListChanged);
+                }
 
                 StateHasChanged();
             }
@@ -113,6 +164,9 @@ else
         get;
         private init;
     } = new(true);
+
+    private static string CurrentSessionSaveName =>
+        SAVE_SESSION_FILE_NAME + ' ' + DateTime.Now.ToString("g") + ".json";
     #endregion
 
     #region Methods
@@ -126,7 +180,11 @@ else
 
     private async void InitiateUserSessionInteractionCreation()
     {
-        Interaction = await UserSessionInteraction.CreateAsync(TargetShipdDataSupplierServiceClient);
+        AsyncLoadedData.TargetShipDatas.SetValue(
+            (await TargetShipdDataSupplierServiceClient.ProvideDatasAsync(new()))
+            .Datas.Select(buffer => buffer.ToData()).ToList());
+
+        Interaction = new UserSessionInteraction(await AsyncLoadedData.TargetShipDatas.ItemTask);
     }
 
     private void OnSelectedIdentifyShipInteractionChanged(IdentifyShipInteraction? _)
@@ -158,6 +216,57 @@ else
     private void AcceptCurrentSelectedShip()
     {
         SelectedIdentifyShipInteraction.Value?.AcceptDataFromSelectedWrap();
+    }
+
+    private async Task SaveSessionStateToFile()
+    {
+        Save save = SessionSaveLib.SessionToSave(Interaction!);
+        string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
+
+        MemoryStream downloadStream = new MemoryStream(Encoding.UTF8.GetBytes(saveString));
+
+        using DotNetStreamReference streamRef = new(downloadStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", CurrentSessionSaveName, streamRef);
+    }
+
+    private async Task OnUploadFileChanged(InputFileChangeEventArgs args)
+    {
+        string text;
+
+        using Stream readStream = args.File.OpenReadStream(maxAllowedSize: long.MaxValue);
+        {
+            StreamReader reader = new(readStream);
+            text = await reader.ReadToEndAsync();
+        }
+
+        await TryLoadSessionStateText(text);
+    }
+
+    private async Task TryLoadSessionStateText(string text)
+    {
+        Save? save;
+        try
+        {
+            save = JsonConvert.DeserializeObject<Save>(text);
+        }
+        catch
+        {
+            // Silent handling so far, will wait until I implement a proper way to notify user of errors.
+            return;
+        }
+
+        if (save == null) return;
+
+        try
+        {
+            Interaction = await SessionSaveLib.CreateSessionFromSave(save);
+        }
+        catch
+        {
+            // Silent handling so far, will wait until I implement a proper way to notify user of errors.
+            return;
+        }
     }
     #endregion
 }

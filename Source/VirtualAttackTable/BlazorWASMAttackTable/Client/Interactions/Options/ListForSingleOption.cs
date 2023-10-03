@@ -13,7 +13,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
         void SelectNoOption();
     }
 
-    public interface IListForSingleOption<out TOption> : IListForSingleOption
+    public interface IListForSingleOption<out TOption> : IListForSingleOption, IListOfOptions<TOption>
     {
         new IReadOnlyValueInteraction<IOption<TOption>?> SelectedOption { get; }
 

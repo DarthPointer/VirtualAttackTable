@@ -29,7 +29,7 @@ namespace BlazorWASMAttackTable.Client.Interactions
         #endregion
 
         #region Constructors
-        private UserSessionInteraction(IEnumerable<TargetShipData> allTargetShipDatas)
+        public UserSessionInteraction(IEnumerable<TargetShipData> allTargetShipDatas)
         {
             AttackTable = new();
             IdentifyShipInteractions = new();
@@ -64,12 +64,12 @@ namespace BlazorWASMAttackTable.Client.Interactions
             AttackTable.CreateNewTargetShip(targetShipData);
         }
 
-        public async static Task<UserSessionInteraction> CreateAsync(TargetShipdDataSupplierService.TargetShipdDataSupplierServiceClient targetShipdDataSupplierServiceClient)
-        {
-            IEnumerable<TargetShipData> allTargetShipDatas = (await targetShipdDataSupplierServiceClient.ProvideDatasAsync(new())).Datas.Select(buffer => buffer.ToData());
+        //public async static Task<UserSessionInteraction> CreateAsync(TargetShipdDataSupplierService.TargetShipdDataSupplierServiceClient targetShipdDataSupplierServiceClient)
+        //{
+        //    IEnumerable<TargetShipData> allTargetShipDatas = (await targetShipdDataSupplierServiceClient.ProvideDatasAsync(new())).Datas.Select(buffer => buffer.ToData());
 
-            return new UserSessionInteraction(allTargetShipDatas);
-        }
+        //    return new UserSessionInteraction(allTargetShipDatas);
+        //}
         #endregion
     }
 }
