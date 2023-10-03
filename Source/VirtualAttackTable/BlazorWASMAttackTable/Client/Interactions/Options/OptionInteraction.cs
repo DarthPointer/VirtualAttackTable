@@ -2,7 +2,7 @@
 
 namespace BlazorWASMAttackTable.Client.Interactions.Options
 {
-    public class OptionInteraction<TOption> : IOptionInteraction
+    public class OptionInteraction<TOption> : IOptionInteraction<TOption>
     {
         #region Fields
         private readonly Option<TOption> _option;
@@ -78,5 +78,12 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
 
         //event Action? StateChanged;
         CallbackListManager StateChanged { get; }
+
+        public void SetIsSelected(bool isSelected);
+    }
+
+    public interface IOptionInteraction<out TOption> : IOptionInteraction
+    {
+        TOption Value { get; }
     }
 }

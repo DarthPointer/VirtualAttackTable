@@ -118,6 +118,14 @@ namespace VirtualAttackTableLib.TargetShipParameter
 
         public IEnumerable<TDefinitionKey> GetPresentDefinitionKeys() => Definitions.Keys;
 
+        public void SetArbitraryValue(float value)
+        {
+            if (Definitions.Values.OfType<ArbitraryValueParameterDefinition<float>>().FirstOrDefault() is ArbitraryValueParameterDefinition<float> arbitraryDefinition)
+            {
+                arbitraryDefinition.Value = value;
+            }
+        }
+
         protected void NotifyParameterChanged()
         {
             ParameterChanged.CreateFireCall()?.Invoke();

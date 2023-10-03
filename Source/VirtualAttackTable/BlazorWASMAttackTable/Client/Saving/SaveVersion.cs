@@ -1,4 +1,7 @@
-﻿namespace BlazorWASMAttackTable.Client.Saving
+﻿using BlazorWASMAttackTable.Client.Saving.SaveObjectVersions;
+using BlazorWASMAttackTable.Client.Saving.SaveObjectVersions.CurrentVersion;
+
+namespace BlazorWASMAttackTable.Client.Saving
 {
     public class SaveVersion
     {
@@ -8,6 +11,8 @@
 
         #region Properties
         public required string VersionCode { get; init; }
+
+        public required Type SaveRootClass { get; init; }
         #endregion
 
         static SaveVersion()
@@ -15,7 +20,10 @@
             Dictionary<string, SaveVersion> versions = new();
 
             Current = new()
-            { VersionCode = "0.3.0" };
+            {
+                VersionCode = "0.3.0",
+                SaveRootClass = typeof(Current)
+            };
 
             AddVersion(versions, Current);
 

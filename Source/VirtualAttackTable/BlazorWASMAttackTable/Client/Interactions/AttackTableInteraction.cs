@@ -30,9 +30,12 @@ namespace BlazorWASMAttackTable.Client.Interactions
         #endregion
 
         #region Methods
-        public void CreateNewTargetShip(TargetShipData targetShipData)
+        public TargetShipAlteredUnitsWrap CreateNewTargetShip(TargetShipData targetShipData)
         {
-            TargetShips.Add(new(new(targetShipData), UnitsSelection));
+            TargetShipAlteredUnitsWrap result = new(new(targetShipData), UnitsSelection);
+            TargetShips.Add(result);
+
+            return result;
         }
 
         public void RemoveTargetShip(TargetShipAlteredUnitsWrap targetShip)

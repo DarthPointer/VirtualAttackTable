@@ -1,6 +1,6 @@
 ﻿namespace BlazorWASMAttackTable.Client.Interactions.Options
 {
-    public abstract class ListOfOptions<TOption> : IListOfOptions
+    public abstract class ListOfOptions<TOption> : IListOfOptions<TOption>
     {
         #region Properties
         public string InteractionHeader
@@ -9,7 +9,8 @@
             init;
         }
 
-        IReadOnlyList<IOptionInteraction> IListOfOptions.Options => Options;
+        IReadOnlyList<IOptionInteraction<TOption>> IListOfOptions<TOption>.Options => Options;
+        
 
         public IReadOnlyList<OptionInteraction<TOption>> Options
         {
@@ -38,6 +39,13 @@
         public string InteractionHeader { get; }
 
         IReadOnlyList<IOptionInteraction> Options { get; }
+    }
+
+    public interface IListOfOptions<out TOption> : IListOfOptions
+    {
+        new IReadOnlyList<IOptionInteraction<TOption>> Options { get; }
+
+        IReadOnlyList<IOptionInteraction> IListOfOptions.Options => Options;
     }
 
     public static class ListOfOptions

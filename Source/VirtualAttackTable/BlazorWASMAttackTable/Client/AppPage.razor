@@ -48,6 +48,13 @@
                              class="upper-tab-button"
                              style="object-fit: contain;"
                              @onclick="SaveSessionStateToFile" />
+                        
+                        <div class="upper-tab-button" style="position: relative">
+                            <img src="images/OpenIconic/data-transfer-upload-blue.svg"
+                                style="position: absolute; x: 0; y: 0; width: 100%; height: 100%; object-fit: contain"/>
+
+                            <InputFile style="position: absolute; x: 0; y: 0; width: 100%; height: 100%; opacity: 0" OnChange="OnUploadFileChanged"/>
+                        </div>
                     </div>
 
                     <AttackTable Interaction="Interaction.AttackTable"/>
@@ -124,7 +131,6 @@ else
 
     #region Properties
 
-    [DisallowNull]
     public UserSessionInteraction? Interaction
     {
         get
@@ -133,12 +139,14 @@ else
         }
         private set
         {
-            // Only expect it set once and no change later.
-            if (_interaction == null)
+            if (_interaction != value)
             {
                 _interaction = value;
 
-                Subscribe(_interaction!.IdentifyShipInteractions.ListChanged, OnIdentifyShipInteractionsListChanged);
+                if (_interaction != null)
+                {
+                    Subscribe(_interaction!.IdentifyShipInteractions.ListChanged, OnIdentifyShipInteractionsListChanged);
+                }
 
                 StateHasChanged();
             }
@@ -210,7 +218,7 @@ else
         SelectedIdentifyShipInteraction.Value?.AcceptDataFromSelectedWrap();
     }
 
-    private async void SaveSessionStateToFile()
+    private async Task SaveSessionStateToFile()
     {
         Save save = SessionSaveLib.SessionToSave(Interaction!);
         string saveString = JsonConvert.SerializeObject(save, Formatting.Indented);
@@ -220,6 +228,45 @@ else
         using DotNetStreamReference streamRef = new(downloadStream);
 
         await JS.InvokeVoidAsync("downloadFileFromStream", CurrentSessionSaveName, streamRef);
+    }
+
+    private async Task OnUploadFileChanged(InputFileChangeEventArgs args)
+    {
+        string text;
+
+        using Stream readStream = args.File.OpenReadStream(maxAllowedSize: long.MaxValue);
+        {
+            StreamReader reader = new(readStream);
+            text = await reader.ReadToEndAsync();
+        }
+
+        await TryLoadSessionStateText(text);
+    }
+
+    private async Task TryLoadSessionStateText(string text)
+    {
+        Save? save;
+        try
+        {
+            save = JsonConvert.DeserializeObject<Save>(text);
+        }
+        catch
+        {
+            // Silent handling so far, will wait until I implement a proper way to notify user of errors.
+            return;
+        }
+
+        if (save == null) return;
+
+        try
+        {
+            Interaction = await SessionSaveLib.CreateSessionFromSave(save);
+        }
+        catch
+        {
+            // Silent handling so far, will wait until I implement a proper way to notify user of errors.
+            return;
+        }
     }
     #endregion
 }
