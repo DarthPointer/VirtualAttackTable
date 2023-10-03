@@ -224,38 +224,44 @@ namespace BlazorWASMAttackTable.Client.Saving
             TargetShipData targetShipData = allTargetShipDatas.FirstOrDefault(x => x.TypeName == typeName) ??
                 throw new Exception($"Could not create a target ship of type {typeName} because no target ship data was found for it.");
 
-            TargetShip targetShip = attackTable.CreateNewTargetShip(targetShipData).TargetShip;
+            TargetShipAlteredUnitsWrap targetShip = attackTable.CreateNewTargetShip(targetShipData);
 
-            SetupParameter(targetShip.BearingRadians, targetShipEntry.Bearing);
+            SetupParameter(targetShip.Bearing, targetShipEntry.Bearing);
 
-            SetupParameter(targetShip.AbsoluteHeightMeters, targetShipEntry.AbsoluteHeight);
-            SetupParameter(targetShip.VisibleHeightRadians, targetShipEntry.VisibleHeight);
-            SetupParameter(targetShip.AbsoluteLengthMeters, targetShipEntry.AbsoluteLength);
-            SetupParameter(targetShip.VisibleLengthRadians, targetShipEntry.VisibleLength);
+            SetupParameter(targetShip.AbsoluteHeight, targetShipEntry.AbsoluteHeight);
+            SetupParameter(targetShip.VisibleHeight, targetShipEntry.VisibleHeight);
+            SetupParameter(targetShip.AbsoluteLength, targetShipEntry.AbsoluteLength);
+            SetupParameter(targetShip.VisibleLength, targetShipEntry.VisibleLength);
 
-            SetupParameter(targetShip.TargetRangeMeters, targetShipEntry.TargetRange);
+            SetupParameter(targetShip.TargetRange, targetShipEntry.TargetRange);
 
-            SetupParameter(targetShip.AoBRadians, targetShipEntry.AoB);
-            targetShip.AoBRadians.AoBQuarter = targetShipEntry.AoBQuarter;
+            SetupParameter(targetShip.AoB, targetShipEntry.AoB);
+            targetShip.AoB.Parameter.AoBQuarter = targetShipEntry.AoBQuarter;
 
-            SetupParameter(targetShip.HullTimeSeconds, targetShipEntry.HullTime);
-            SetupParameter(targetShip.OneDegreeTimeSeconds, targetShipEntry.OneDegreeTime);
+            SetupParameter(targetShip.HullTime, targetShipEntry.HullTime);
+            SetupParameter(targetShip.OneDegreeTime, targetShipEntry.OneDegreeTime);
 
-            SetupParameter(targetShip.TargetSpeedMpS, targetShipEntry.TargetSpeed);
-            SetupParameter(targetShip.AngularSpeedRpS, targetShipEntry.AngularSpeed);
+            SetupParameter(targetShip.TargetSpeed, targetShipEntry.TargetSpeed);
+            SetupParameter(targetShip.AngularSpeed, targetShipEntry.AngularSpeed);
 
-            SetupParameter(targetShip.TorpedoSpeedMpS, targetShipEntry.TorpedoSpeed);
+            SetupParameter<string>(targetShip.TorpedoSpeed, targetShipEntry.TorpedoSpeed);
 
-            SetupParameter(targetShip.BoatSpeedMpS, targetShipEntry.BoatSpeed);
+            SetupParameter(targetShip.BoatSpeed, targetShipEntry.BoatSpeed);
 
-            SetupParameter(targetShip.LeadAngleRadians, targetShipEntry.LeadAngle);
+            SetupParameter(targetShip.LeadAngle, targetShipEntry.LeadAngle);
         }
 
-        private static void SetupParameter<TDefinitionKey>(MultipleDefinitionParameter<TDefinitionKey, float> parameter, FloatCell<TDefinitionKey> floatCell)
-            where TDefinitionKey : notnull
+        private static void SetupParameter<TDefinitionKey>(AlteredUnitParameterInteraction<TDefinitionKey> parameter, FloatCell<TDefinitionKey> floatCell)
+            where TDefinitionKey : struct
         {
-            parameter.SetArbitraryValue(floatCell.ArbitraryValue);
-            parameter.ActiveDefinitionKey = floatCell.ActiveDefinitionKey;
+            parameter.Parameter.SetArbitraryValue(floatCell.ArbitraryValue);
+            SelectOption(parameter.DefinitionKeySelection, floatCell.ActiveDefinitionKey);
+        }
+
+        private static void SetupParameter<TDefinitionKey>(AlteredUnitParameterInteraction<string> parameter, FloatCell<string> floatCell)
+        {
+            parameter.Parameter.SetArbitraryValue(floatCell.ArbitraryValue);
+            SelectOption(parameter.DefinitionKeySelection, key => key == floatCell.ActiveDefinitionKey);
         }
         #endregion
     }
