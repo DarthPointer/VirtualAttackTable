@@ -32,6 +32,13 @@
                     @option.OptionName
                 </div>
             }
+
+            @foreach (FakeOptionInteraction fakeOption in Interaction.FakeOptionInteractions)
+            {
+                <div class="combobox-dropdown-entry" @onclick="() => OnFakeOptionClick(fakeOption)">
+                    @fakeOption.OptionName
+                </div>
+            }
         </div>
     }
 </div>
@@ -108,6 +115,13 @@
         {
             option.Toggle();
         }
+    }
+
+    private void OnFakeOptionClick(FakeOptionInteraction fakeOptionInteraction)
+    {
+        DisplayDropdown = false;
+
+        fakeOptionInteraction.TriggerAction();
     }
 
     private void OnMouseEnterOption(IOptionInteraction option)

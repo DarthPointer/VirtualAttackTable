@@ -12,18 +12,18 @@
         IReadOnlyList<IOptionInteraction<TOption>> IListOfOptions<TOption>.Options => Options;
         
 
-        public IReadOnlyList<OptionInteraction<TOption>> Options
-        {
-            get;
-            private set;
-        }
+        public IReadOnlyList<OptionInteraction<TOption>> Options { get; }
+
+        public IReadOnlyList<FakeOptionInteraction> FakeOptionInteractions { get; }
         #endregion
 
         #region Constructors
-        public ListOfOptions(IEnumerable<Option<TOption>> options, string interactionHeader)
+        public ListOfOptions(IEnumerable<Option<TOption>> options, string interactionHeader, IEnumerable<FakeOptionInteraction>? fakeOptionInteractions = null)
         {
             Options = options.Select(option => new OptionInteraction<TOption>(option, ToggleOption, this)).ToList();
             InteractionHeader = interactionHeader;
+
+            FakeOptionInteractions = fakeOptionInteractions?.ToList() ?? new List<FakeOptionInteraction> { };
         }
         #endregion
 
@@ -39,6 +39,8 @@
         public string InteractionHeader { get; }
 
         IReadOnlyList<IOptionInteraction> Options { get; }
+
+        IReadOnlyList<FakeOptionInteraction> FakeOptionInteractions { get; }
     }
 
     public interface IListOfOptions<out TOption> : IListOfOptions
