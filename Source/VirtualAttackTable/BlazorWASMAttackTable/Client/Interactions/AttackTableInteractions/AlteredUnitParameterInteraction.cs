@@ -61,6 +61,8 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             }
         }
 
+        private IOptionInteraction? ArbitraryDefinitionSelectionOption { get; }
+
         private ParameterDefinitionState DefinitionState
         {
             get
@@ -93,6 +95,18 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             DefinitionKeySelection = new(options, "Definition");
             DefinitionKeySelection.Options.FirstOrDefault(opt => opt.Value.Equals(parameter.ActiveDefinitionKey))?.Toggle();
             DefinitionKeySelection.SelectedOption.ValueChanged.Subscribe(SetDefinitionKey);
+
+            KeyValuePair<TDefinitionKey, ParameterDefinition<float>>? arbitraryDefinitionDicionaryPair =
+                parameter.AllDefinitions.
+                Select(pair => (KeyValuePair<TDefinitionKey, ParameterDefinition<float>>?)pair).
+                FirstOrDefault(pair => pair?.Value is ArbitraryValueParameterDefinition<float>);
+
+            if (arbitraryDefinitionDicionaryPair != null)
+            {
+                TDefinitionKey arbitraryDefinitionKey = arbitraryDefinitionDicionaryPair.Value.Key;
+
+                ArbitraryDefinitionSelectionOption = DefinitionKeySelection.Options.FirstOrDefault(opt => opt.Value.Equals(arbitraryDefinitionKey));
+            }
         }
         #endregion
 
@@ -112,6 +126,18 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
                 _baseUnitValue = baseUnits;
                 CurrentArbitraryDefinition!.Value = _baseUnitValue;
             }
+        }
+
+        public void LoadToAndSelectArbitrary()
+        {
+            float _baseUnitsValue = Parameter.CurrentValue;
+
+            if (ArbitraryDefinitionSelectionOption?.IsSelected == false)
+            {
+                ArbitraryDefinitionSelectionOption.Toggle();
+            }
+
+            SetArbitraryBaseUnitsValue(_baseUnitsValue);
         }
 
         private void SetDefinitionKey(IOption<TDefinitionKey>? _)
