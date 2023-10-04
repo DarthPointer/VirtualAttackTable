@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.1089996"
-     inkscape:cx="130.86774"
-     inkscape:cy="140.35091"
+     inkscape:cx="122.56996"
+     inkscape:cy="140.82506"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -181,7 +181,28 @@
        inkscape:color="rgb(0,134,229)" />
   </sodipodi:namedview>
   <defs
-     id="defs2" />
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path5057"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+  </defs>
   <g
      inkscape:label="Слой 1"
      inkscape:groupmode="layer"
@@ -215,7 +236,7 @@
        style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none"
        d="M 16.25,69.999999 18.75,75 l 2.5,-5.000001 h -5" />
     <path
-       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:2"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:2;marker-start:url(#Arrow1)"
        d="M 69.999999,20 V 75"
        id="path291" />
     <path

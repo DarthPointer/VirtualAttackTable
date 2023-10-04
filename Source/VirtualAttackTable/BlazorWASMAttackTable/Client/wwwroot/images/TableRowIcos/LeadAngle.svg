@@ -24,9 +24,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.093205494"
-     inkscape:cx="-4677.8358"
-     inkscape:cy="-1426.9545"
+     inkscape:zoom="1.4912879"
+     inkscape:cx="-79.126237"
+     inkscape:cy="206.53289"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -226,5 +226,14 @@
        sodipodi:arc-type="arc"
        d="m 52.674405,61.144117 a 27.5,27.5 0 0 1 9.503091,-5.008078"
        sodipodi:open="true" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none"
+       d="m 18.75,65 -3.333334,3.333334 v 13.333334 l 3.333334,10 3.333332,-10 V 68.333334 Z"
+       id="path309"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none"
+       d="m 15.416666,91.666668 v -1.666666 l 3.333334,-5 3.333332,5 v 1.666666 z"
+       id="path919" />
   </g>
 </svg>
