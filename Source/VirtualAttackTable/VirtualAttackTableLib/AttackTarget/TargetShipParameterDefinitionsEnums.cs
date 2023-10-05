@@ -11,6 +11,12 @@ namespace VirtualAttackTableLib.AttackTarget
         Arbitrary = 0
     }
 
+    public enum TargetHeadingDefinition
+    {
+        Arbitrary = 0,
+        ByBoatHeadingBearingAndAoB = 1
+    }
+
     public enum AbsoluteHeightDefinition
     {
         Arbitrary = 0,
@@ -42,7 +48,8 @@ namespace VirtualAttackTableLib.AttackTarget
     public enum AoBDefinition
     {
         Arbitrary = 0,
-        ByRangeAndVisibleLength = 1
+        ByRangeAndVisibleLength = 1,
+        ByHeadingsAndBearing = 2
     }
 
     public enum HullTimeDefinition
@@ -67,6 +74,11 @@ namespace VirtualAttackTableLib.AttackTarget
     {
         Arbitrary = 0,
         ByOneDegreeTime = 1
+    }
+
+    public enum BoatHeadingDefinition
+    {
+        Arbitrary = 0
     }
 
     public enum BoatSpeedDefinition

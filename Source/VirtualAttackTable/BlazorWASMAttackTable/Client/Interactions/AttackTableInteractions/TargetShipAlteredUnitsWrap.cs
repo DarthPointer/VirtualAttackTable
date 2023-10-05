@@ -28,6 +28,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         public TargetShip TargetShip { get; }
 
         public AlteredUnitParameterInteraction<BearingDefinition> Bearing { get; }
+        public AlteredUnitParameterInteraction<TargetHeadingDefinition> TargetHeading { get; }
 
         public AlteredUnitParameterInteraction<AbsoluteHeightDefinition> AbsoluteHeight { get; }
         public AlteredUnitParameterInteraction<VisibleHeightDefinition> VisibleHeight { get; }
@@ -46,6 +47,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
 
         public AlteredUnitParameterInteraction<string> TorpedoSpeed { get; }
 
+        public AlteredUnitParameterInteraction<BoatHeadingDefinition> BoatHeading { get; }
         public AlteredUnitParameterInteraction<BoatSpeedDefinition> BoatSpeed { get; }
 
         public AlteredUnitParameterInteraction<LeadAngleDefinition> LeadAngle { get; }
@@ -61,6 +63,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             TargetShip = targetShip;
 
             Bearing = new(TargetShip.BearingRadians, GenerateOptions(TargetShip.BearingRadians.GetPresentDefinitionKeys()), unitsSelection.Bearing);
+            TargetHeading = new(TargetShip.TargetHeadingRadians, GenerateOptions(TargetShip.TargetHeadingRadians.GetPresentDefinitionKeys()), unitsSelection.TargetHeading);
 
             AbsoluteHeight = new(TargetShip.AbsoluteHeightMeters, GenerateOptions(TargetShip.AbsoluteHeightMeters.GetPresentDefinitionKeys(), _absoluteHeightDefinitionDescriptions), unitsSelection.AbsoluteHeight);
             VisibleHeight = new(TargetShip.VisibleHeightRadians, GenerateOptions(TargetShip.VisibleHeightRadians.GetPresentDefinitionKeys()), unitsSelection.VisibleHeight);
@@ -82,6 +85,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
 
             TorpedoSpeed = new(TargetShip.TorpedoSpeedMpS, GenerateStringOptions(TargetShip.TorpedoSpeedMpS.GetPresentDefinitionKeys()), unitsSelection.TorpedoSpeed);
 
+            BoatHeading = new(TargetShip.BoatHeadingRadians, GenerateOptions(TargetShip.BoatHeadingRadians.GetPresentDefinitionKeys()), unitsSelection.BoatHeading);
             BoatSpeed = new(TargetShip.BoatSpeedMpS, GenerateOptions(TargetShip.BoatSpeedMpS.GetPresentDefinitionKeys()), unitsSelection.BoatSpeed);
 
             LeadAngle = new(TargetShip.LeadAngleRadians, GenerateOptions(TargetShip.LeadAngleRadians.GetPresentDefinitionKeys(), _leadAngleDefinitionDescriptions), unitsSelection.LeadAngle);

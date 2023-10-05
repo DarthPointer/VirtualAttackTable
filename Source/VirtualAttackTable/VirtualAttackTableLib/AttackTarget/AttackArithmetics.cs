@@ -90,5 +90,17 @@ namespace VirtualAttackTableLib.AttackTarget
 
             return Units.Degree.ToRadians(1)/oneDegreeTimeSeconds;
         }
+
+        public static float TargetHeadingByBoatHeadingBearingAndAoB(
+            float boatHeading, float bearing, float AoB)
+        {
+            return MathF.PI + boatHeading + bearing - AoB;
+        }
+
+        public static float AoBByHeadingsAndBearing(
+            float boatHeading, float targetHeading, float bearing)
+        {
+            return MathF.PI + boatHeading + bearing - targetHeading;
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace VirtualAttackTableLib.AttackTarget
         private MultipleDefinitionParameter<SingleOptionDefinition, TargetShipData> ShipDataParameter { get; init; } = new();
 
         public MultipleDefinitionParameter<BearingDefinition, float> BearingRadians { get; private init; } = new();
+        public MultipleDefinitionParameter<TargetHeadingDefinition, float> TargetHeadingRadians { get; private init; } = new();
 
         public MultipleDefinitionParameter<AbsoluteHeightDefinition, float> AbsoluteHeightMeters { get; private init; } = new();
         public MultipleDefinitionParameter<VisibleHeightDefinition, float> VisibleHeightRadians { get; private init; } = new();
@@ -39,6 +40,7 @@ namespace VirtualAttackTableLib.AttackTarget
 
         public TorpedoSpeedMpSParameter TorpedoSpeedMpS { get; private init; } = new();
 
+        public MultipleDefinitionParameter<BoatHeadingDefinition, float> BoatHeadingRadians { get; private init; } = new();
         public MultipleDefinitionParameter<BoatSpeedDefinition, float> BoatSpeedMpS { get; private init; } = new();
 
         public MultipleDefinitionParameter<LeadAngleDefinition, float> LeadAngleRadians { get; private init; } = new();
@@ -57,6 +59,11 @@ namespace VirtualAttackTableLib.AttackTarget
             parameterDefinitions.Add(BearingRadians.AddDefinition(BearingDefinition.Arbitrary,
                 new ArbitraryValueParameterDefinition<float>(BearingRadians, defaultValue: 0)));
 
+            parameterDefinitions.Add(TargetHeadingRadians.AddDefinition(TargetHeadingDefinition.Arbitrary,
+                new ArbitraryValueParameterDefinition<float>(BearingRadians, defaultValue: 0)));
+            parameterDefinitions.Add(TargetHeadingRadians.AddDefinition(TargetHeadingDefinition.ByBoatHeadingBearingAndAoB,
+                GetTargetHeadingByBoatHeadingBearingAndAoB, new List<IParameter> { BoatHeadingRadians, BearingRadians, AoBRadians }));
+
 
             parameterDefinitions.Add(AbsoluteHeightMeters.AddDefinition(AbsoluteHeightDefinition.Maximum, GetMaximumAbsoluteHeightMeters, new List<IParameter> { ShipDataParameter }));
             parameterDefinitions.Add(AbsoluteHeightMeters.AddDefinition(AbsoluteHeightDefinition.Arbitrary, new ArbitraryValueParameterDefinition<float>(AbsoluteHeightMeters, defaultValue: GetMaximumAbsoluteHeightMeters())));
@@ -74,6 +81,7 @@ namespace VirtualAttackTableLib.AttackTarget
 
             parameterDefinitions.Add(AoBRadians.AddDefinition(AoBDefinition.Arbitrary, new ArbitraryAoBDefinition(AoBRadians, defaultValue: 0)));
             parameterDefinitions.Add(AoBRadians.AddDefinition(AoBDefinition.ByRangeAndVisibleLength, GetAoBByRangeAndVisibleLength, new List<IParameter> { TargetRangeMeters, AbsoluteLengthMeters, VisibleLengthRadians }));
+            parameterDefinitions.Add(AoBRadians.AddDefinition(AoBDefinition.ByHeadingsAndBearing, GetAoBByHeadingsAndBearing, new List<IParameter> { BoatHeadingRadians, TargetHeadingRadians, BearingRadians }));
 
 
             parameterDefinitions.Add(HullTimeSeconds.AddDefinition(HullTimeDefinition.Arbitrary, new ArbitraryValueParameterDefinition<float>(HullTimeSeconds, defaultValue: 0)));
@@ -88,6 +96,7 @@ namespace VirtualAttackTableLib.AttackTarget
             parameterDefinitions.Add(AngularSpeedRpS.AddDefinition(AngularSpeedDefinition.Arbitrary, new ArbitraryValueParameterDefinition<float>(AngularSpeedRpS, defaultValue: 0)));
             parameterDefinitions.Add(AngularSpeedRpS.AddDefinition(AngularSpeedDefinition.ByOneDegreeTime, GetAngularSpeedByOneDegreeTime, new List<IParameter> { OneDegreeTimeSeconds }));
 
+            parameterDefinitions.Add(BoatHeadingRadians.AddDefinition(BoatHeadingDefinition.Arbitrary, new ArbitraryValueParameterDefinition<float>(BoatHeadingRadians, defaultValue: 0)));
             parameterDefinitions.Add(BoatSpeedMpS.AddDefinition(BoatSpeedDefinition.Arbitrary, new ArbitraryValueParameterDefinition<float>(BoatSpeedMpS, defaultValue: 0)));
 
             parameterDefinitions.Add(LeadAngleRadians.AddDefinition(LeadAngleDefinition.Arbitrary, new ArbitraryValueParameterDefinition<float>(LeadAngleRadians, defaultValue: 0)));
@@ -101,6 +110,11 @@ namespace VirtualAttackTableLib.AttackTarget
         #endregion
 
         #region Methods
+        private float GetTargetHeadingByBoatHeadingBearingAndAoB()
+        {
+            return AttackArithmetics.TargetHeadingByBoatHeadingBearingAndAoB(BoatHeadingRadians.CurrentValue, BearingRadians.CurrentValue, AoBRadians.CurrentValue);
+        }
+
         private float GetMaximumAbsoluteHeightMeters()
         {
             return Data.MaxHeightMeters;
@@ -119,6 +133,11 @@ namespace VirtualAttackTableLib.AttackTarget
         private float GetAoBByRangeAndVisibleLength()
         {
             return AttackArithmetics.AoBRadiansByTrigonometry(TargetRangeMeters.CurrentValue, AbsoluteLengthMeters.CurrentValue, VisibleLengthRadians.CurrentValue, AoBRadians.AoBQuarter);
+        }
+
+        private float GetAoBByHeadingsAndBearing()
+        {
+            return AttackArithmetics.AoBByHeadingsAndBearing(BoatHeadingRadians.CurrentValue, TargetHeadingRadians.CurrentValue, BearingRadians.CurrentValue);
         }
 
         private float GetTargetSpeedLinear()

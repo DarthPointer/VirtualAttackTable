@@ -5,6 +5,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
     public class CollapseColumnsFlags
     {
         public ValueInteraction<bool> CollapseBearing { get; } = new(false);
+        public ValueInteraction<bool> TargetHeading { get; } = new(false);
         public ValueInteraction<bool> CollapseAbsoluteHeight { get; } = new(false);
         public ValueInteraction<bool> CollapseVisibleHeight { get; } = new(false);
         public ValueInteraction<bool> CollapseAbsoluteLength { get; } = new(false);
@@ -16,6 +17,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         public ValueInteraction<bool> CollapseTargetSpeed { get; } = new(false);
         public ValueInteraction<bool> CollapseAngularTargetSpeed { get; } = new(false);
         public ValueInteraction<bool> CollapseTorpedoSpeed { get; } = new(false);
+        public ValueInteraction<bool> BoatHeading { get; } = new(false);
         public ValueInteraction<bool> CollapseBoatSpeed { get; } = new(false);
         public ValueInteraction<bool> CollapseLeadAngle { get; } = new(false);
     }
