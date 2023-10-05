@@ -94,13 +94,19 @@ namespace VirtualAttackTableLib.AttackTarget
         public static float TargetHeadingByBoatHeadingBearingAndAoB(
             float boatHeading, float bearing, float AoB)
         {
-            return MathF.PI + boatHeading + bearing - AoB;
+            return NormalizeToPositiveRadians(MathF.PI + boatHeading + bearing - AoB);
         }
 
         public static float AoBByHeadingsAndBearing(
             float boatHeading, float targetHeading, float bearing)
         {
-            return MathF.PI + boatHeading + bearing - targetHeading;
+            return NormalizeToPositiveRadians(MathF.PI + boatHeading + bearing - targetHeading);
+        }
+        
+        public static float NormalizeToPositiveRadians(float sourceRadians)
+        {
+            float modulus = sourceRadians % (MathF.PI * 2);
+            return modulus >= 0 ? modulus : modulus + MathF.PI*2;
         }
     }
 }
