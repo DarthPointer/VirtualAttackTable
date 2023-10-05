@@ -61,6 +61,8 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             }
         }
 
+        private IOptionInteraction? ArbitraryDefinitionSelectionOption { get; }
+
         private ParameterDefinitionState DefinitionState
         {
             get
@@ -90,9 +92,25 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             Parameter = parameter;
             Parameter.ParameterChanged.Subscribe(OnParameterChanged);
 
-            DefinitionKeySelection = new(options, "Definition");
+            
+
+            KeyValuePair<TDefinitionKey, ParameterDefinition<float>>? arbitraryDefinitionDicionaryPair =
+                parameter.AllDefinitions.
+                Select(pair => (KeyValuePair<TDefinitionKey, ParameterDefinition<float>>?)pair).
+                FirstOrDefault(pair => pair?.Value is ArbitraryValueParameterDefinition<float>);
+
+            bool enableSaveToArbitrary = arbitraryDefinitionDicionaryPair != null && parameter.AllDefinitions.Count > 1;
+
+            DefinitionKeySelection = new(options, "Definition", fakeOptionInteractions: GenerateFakeOptionsForDefinitionSelection(enableSaveToArbitrary));
             DefinitionKeySelection.Options.FirstOrDefault(opt => opt.Value.Equals(parameter.ActiveDefinitionKey))?.Toggle();
             DefinitionKeySelection.SelectedOption.ValueChanged.Subscribe(SetDefinitionKey);
+
+            if (enableSaveToArbitrary)
+            {
+                TDefinitionKey arbitraryDefinitionKey = arbitraryDefinitionDicionaryPair!.Value.Key;
+
+                ArbitraryDefinitionSelectionOption = DefinitionKeySelection.Options.FirstOrDefault(opt => opt.Value.Equals(arbitraryDefinitionKey));
+            }
         }
         #endregion
 
@@ -114,6 +132,18 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             }
         }
 
+        public void LoadToAndSelectArbitrary()
+        {
+            float _baseUnitsValue = Parameter.CurrentValue;
+
+            Parameter.SetArbitraryValue(_baseUnitsValue);
+
+            if (ArbitraryDefinitionSelectionOption?.IsSelected == false)
+            {
+                ArbitraryDefinitionSelectionOption.Toggle();
+            }
+        }
+
         private void SetDefinitionKey(IOption<TDefinitionKey>? _)
         {
             Parameter.ActiveDefinitionKey = DefinitionKeySelection.SelectedOption.Value!.Value;
@@ -132,6 +162,14 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         }
 
         private void NotifyParameterChanged() => ParameterChanged.CreateFireCall()?.Invoke();
+
+        private IEnumerable<FakeOptionInteraction> GenerateFakeOptionsForDefinitionSelection(bool enableSaveToArbitrary)
+        {
+            if (enableSaveToArbitrary)
+            {
+                yield return new("Save to Arbitrary", "Stores current value in arbitrary definition and switches to it", LoadToAndSelectArbitrary);
+            }
+        }
         #endregion
     }
 

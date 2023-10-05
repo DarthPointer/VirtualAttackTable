@@ -58,7 +58,9 @@ namespace BlazorWASMAttackTable.Client.Interactions.Options
         #endregion
 
         #region Constructors
-        public ListForSingleOption(IEnumerable<Option<TOption>> options, string interactionHeader, bool allowNoOption = false) : base(options, interactionHeader)
+        public ListForSingleOption(IEnumerable<Option<TOption>> options, string interactionHeader,
+            bool allowNoOption = false, IEnumerable<FakeOptionInteraction>? fakeOptionInteractions = null)
+            : base(options, interactionHeader, fakeOptionInteractions)
         {
             AllowNoOption = allowNoOption;
 
