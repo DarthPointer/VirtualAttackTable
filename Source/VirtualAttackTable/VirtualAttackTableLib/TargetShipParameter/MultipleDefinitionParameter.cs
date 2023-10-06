@@ -51,9 +51,9 @@ namespace VirtualAttackTableLib.TargetShipParameter
                     //_activeDefinition.StateOrValueChanged -= NotifyParameterChanged;
 
                     _activeDefinition = value;
-                    ActiveDefinitionValueChangedSubscription = value.StateOrValueChanged.Subscribe(NotifyParameterChanged);
+                    ActiveDefinitionValueChangedSubscription = value.StateOrValueChanged.Subscribe(OnParameterChanged);
                     //value.StateOrValueChanged += NotifyParameterChanged;
-                    NotifyParameterChanged();
+                    OnParameterChanged();
                 }
             }
         }
@@ -126,10 +126,15 @@ namespace VirtualAttackTableLib.TargetShipParameter
             }
         }
 
-        protected void NotifyParameterChanged()
+        protected void OnParameterChanged()
         {
+            ProcessParameterChanged();
+
             ParameterChanged.CreateFireCall()?.Invoke();
         }
+
+        protected virtual void ProcessParameterChanged()
+        { }
         #endregion
     }
 }

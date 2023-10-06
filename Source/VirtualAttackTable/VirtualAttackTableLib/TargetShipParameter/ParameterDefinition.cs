@@ -134,29 +134,30 @@ namespace VirtualAttackTableLib.TargetShipParameter
 
         private ParameterDefinitionState CheckForSelfLoop()
         {
-            HashSet<IParameter> passedParameters = new();
+            HashSet<IParameter> loopParameters = new(){ OwningParameter };
 
-            foreach (IParameter parameter in DependencyParameters)
+            foreach (IParameter dependencyParameter in DependencyParameters)
             {
-                if (parameter == OwningParameter) return ParameterDefinitionState.DependencyLoop;
-
-                if (CheckForSelfLoop(parameter, passedParameters) == ParameterDefinitionState.DependencyLoop) return ParameterDefinitionState.DependencyLoop;
+                if (CheckForSelfLoop(dependencyParameter, loopParameters) == ParameterDefinitionState.DependencyLoop)
+                    return ParameterDefinitionState.DependencyLoop;
             }
 
             return ParameterDefinitionState.Valid;
         }
 
-        private ParameterDefinitionState CheckForSelfLoop(IParameter parameterToCheck, HashSet<IParameter> passedParameters)
+        private ParameterDefinitionState CheckForSelfLoop(IParameter parameterToCheck, HashSet<IParameter> loopParameters)
         {
-            passedParameters.Add(parameterToCheck);
+            if (loopParameters.Contains(parameterToCheck)) return ParameterDefinitionState.DependencyLoop;
 
-            foreach(IParameter parameter in parameterToCheck.GetDependencyParameters())
+            loopParameters.Add(parameterToCheck);
+
+            foreach (IParameter dependencyParameter in parameterToCheck.GetDependencyParameters())
             {
-                if (parameter == OwningParameter) return ParameterDefinitionState.DependencyLoop;
-
-                if (!passedParameters.Contains(parameter) &&
-                    CheckForSelfLoop(parameter, passedParameters) == ParameterDefinitionState.DependencyLoop) return ParameterDefinitionState.DependencyLoop;
+                if (CheckForSelfLoop(dependencyParameter, loopParameters) == ParameterDefinitionState.DependencyLoop)
+                    return ParameterDefinitionState.DependencyLoop;
             }
+
+            loopParameters.Remove(parameterToCheck);
 
             return ParameterDefinitionState.Valid;
         }

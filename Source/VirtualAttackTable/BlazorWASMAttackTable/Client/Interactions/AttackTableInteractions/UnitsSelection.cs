@@ -35,6 +35,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
         public IReadOnlyList<IListForSingleOption> UnitOptionLists => _unitOptionLists;
 
         public ListForSingleOption<AngleUnit> Bearing { get; }
+        public ListForSingleOption<AngleUnit> TargetHeading { get; }
 
         public ListForSingleOption<LengthUnit> AbsoluteHeight { get; }
         public ListForSingleOption<AngleUnit> VisibleHeight { get; }
@@ -53,6 +54,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
 
         public ListForSingleOption<SpeedUnit> TorpedoSpeed { get; }
 
+        public ListForSingleOption<AngleUnit> BoatHeading { get; }
         public ListForSingleOption<SpeedUnit> BoatSpeed { get; }
 
         public ListForSingleOption<AngleUnit> LeadAngle { get; }
@@ -64,6 +66,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
             OwningAttackTable = owningAttackTable;
 
             Bearing = CreateUnitOptionsList(_angleUnits, "Bearing");
+            TargetHeading = CreateUnitOptionsList(_angleUnits, "Target Heading");
 
             AbsoluteHeight = CreateUnitOptionsList(_lengthUnits, "Absolute Height");
             VisibleHeight = CreateUnitOptionsList(_wpPeriscopeVertical, "Visible Height");
@@ -82,6 +85,7 @@ namespace BlazorWASMAttackTable.Client.Interactions.AttackTableInteractions
 
             TorpedoSpeed = CreateUnitOptionsList(_speedUnits, "Torpedo Speed");
 
+            BoatHeading = CreateUnitOptionsList(_angleUnits, "Boat Heading");
             BoatSpeed = CreateUnitOptionsList(_speedUnits, "Boat Speed");
 
             LeadAngle = CreateUnitOptionsList(_angleUnits, "Lead Angle");

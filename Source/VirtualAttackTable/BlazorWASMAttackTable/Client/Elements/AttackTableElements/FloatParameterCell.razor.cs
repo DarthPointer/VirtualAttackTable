@@ -12,6 +12,8 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         where TParameter : MultipleDefinitionParameter<TDefinitionKey, float>
         where TDefinitionKey : notnull
     {
+        private const string  DEPENDENCY_LOOP = "Dependency Loop";
+
         #region Fields
         private bool _badInput = false;
         private string _displayValue = "";
@@ -24,6 +26,8 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         [Parameter, EditorRequired]
         public AlteredUnitParameterInteraction<TParameter, TDefinitionKey> Interaction { get; set; } = null!;
 
+        private AlteredUnitParameterInteraction<TParameter, TDefinitionKey>? PrevInteraction { get; set; }
+
         [Parameter, EditorRequired]
         public AttackTableShipEntry OwningEntry { get; set; } = null!;
 
@@ -31,7 +35,7 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         {
             get
             {
-                return _displayValue;
+                return DependencyLoop ? DEPENDENCY_LOOP : _displayValue;
             }
             set
             {
@@ -64,6 +68,8 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
                 }
             }
         }
+
+        private bool DependencyLoop => Interaction.Parameter.CurrentState == ParameterDefinitionState.DependencyLoop;
 
         private bool HighlightingParametersForActiveDefinition
         {
@@ -118,7 +124,13 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
             Subscribe(Interaction.ParameterChanged, OnParameterChanged);
             Subscribe(Interaction.DefinitionKeySelection.PreviewedOption.ValueChanged, OnDefinitionPreviewedValueChanged);
             //Subscribe(Interaction.DefinitionKeySelection.SelectedOption.ValueChanged, OnSelectedDefinitionChanged);
-            OnParameterChanged();
+
+            // Blazor likes to issue reinitializations even when there is no good reason to do it.
+            if (Interaction != PrevInteraction)
+            {
+                PrevInteraction = Interaction;
+                OnParameterChanged();
+            }
         }
 
         private void OnParameterChanged()
@@ -126,8 +138,7 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
             BadInput = false;
             _displayValue = BlazorAttackTableLib.CustomUnitValueFormat(Interaction.CurrentValue);
 
-            if (HighlightingParametersForActiveDefinition)
-                OwningEntry.DefinitionToHighlightParameters = Interaction.Parameter.ActiveDefinition;
+            SetOwnDefinitionToHighlightIfPresent();
 
             StateHasChanged();
         }
@@ -180,6 +191,21 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
             else if (Interaction.Parameter.AllDefinitions.Values.Contains(OwningEntry.DefinitionToHighlightParameters))
             {
                 OwningEntry.DefinitionToHighlightParameters = null;
+                return;
+            }
+        }
+
+        private void SetOwnDefinitionToHighlightIfPresent()
+        {
+            if (PreviewedDefinition != null)
+            {
+                OwningEntry.DefinitionToHighlightParameters = PreviewedDefinition;
+                return;
+            }
+
+            if (HighlightingParametersForActiveDefinition)
+            {
+                OwningEntry.DefinitionToHighlightParameters = Interaction.Parameter.ActiveDefinition;
                 return;
             }
         }

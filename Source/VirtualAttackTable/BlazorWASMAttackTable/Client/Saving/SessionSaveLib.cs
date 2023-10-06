@@ -81,6 +81,7 @@ namespace BlazorWASMAttackTable.Client.Saving
             return new()
             {
                 Bearing = GetSelectedUnitName(unitsSelection.Bearing),
+                TargetHeading = GetSelectedUnitName(unitsSelection.TargetHeading),
 
                 AbsoluteHeight = GetSelectedUnitName(unitsSelection.AbsoluteHeight),
                 VisibleHeight = GetSelectedUnitName(unitsSelection.VisibleHeight),
@@ -99,6 +100,7 @@ namespace BlazorWASMAttackTable.Client.Saving
 
                 TorpedoSpeed = GetSelectedUnitName(unitsSelection.TorpedoSpeed),
 
+                BoatHeading = GetSelectedUnitName(unitsSelection.BoatHeading),
                 BoatSpeed = GetSelectedUnitName(unitsSelection.BoatSpeed),
 
                 LeadAngle = GetSelectedUnitName(unitsSelection.LeadAngle)
@@ -117,6 +119,7 @@ namespace BlazorWASMAttackTable.Client.Saving
                 TypeName = targetShip.Data.TypeName,
 
                 Bearing = CreateFloatCellSave(targetShip.BearingRadians),
+                TargetHeading = CreateFloatCellSave(targetShip.TargetHeadingRadians),
 
                 AbsoluteHeight = CreateFloatCellSave(targetShip.AbsoluteHeightMeters),
                 VisibleHeight = CreateFloatCellSave(targetShip.VisibleHeightRadians),
@@ -136,6 +139,7 @@ namespace BlazorWASMAttackTable.Client.Saving
 
                 TorpedoSpeed = CreateFloatCellSave(targetShip.TorpedoSpeedMpS),
 
+                BoatHeading = CreateFloatCellSave(targetShip.BoatHeadingRadians),
                 BoatSpeed = CreateFloatCellSave(targetShip.BoatSpeedMpS),
 
                 LeadAngle = CreateFloatCellSave(targetShip.LeadAngleRadians)
@@ -189,6 +193,7 @@ namespace BlazorWASMAttackTable.Client.Saving
         private static void SetUnits(UnitsSelection unitsSelection, ParameterUnits parameterUnits)
         {
             SelectUnit(unitsSelection.Bearing, parameterUnits.Bearing);
+            SelectUnit(unitsSelection.TargetHeading, parameterUnits.TargetHeading);
 
             SelectUnit(unitsSelection.AbsoluteHeight, parameterUnits.AbsoluteHeight);
             SelectUnit(unitsSelection.VisibleHeight, parameterUnits.VisibleHeight);
@@ -207,6 +212,7 @@ namespace BlazorWASMAttackTable.Client.Saving
 
             SelectUnit(unitsSelection.TorpedoSpeed, parameterUnits.TorpedoSpeed);
 
+            SelectUnit(unitsSelection.BoatHeading, parameterUnits.BoatHeading);
             SelectUnit(unitsSelection.BoatSpeed, parameterUnits.BoatSpeed);
 
             SelectUnit(unitsSelection.LeadAngle, parameterUnits.LeadAngle);
@@ -227,6 +233,7 @@ namespace BlazorWASMAttackTable.Client.Saving
             TargetShipAlteredUnitsWrap targetShip = attackTable.CreateNewTargetShip(targetShipData);
 
             SetupParameter(targetShip.Bearing, targetShipEntry.Bearing);
+            SetupParameter(targetShip.TargetHeading, targetShipEntry.TargetHeading);
 
             SetupParameter(targetShip.AbsoluteHeight, targetShipEntry.AbsoluteHeight);
             SetupParameter(targetShip.VisibleHeight, targetShipEntry.VisibleHeight);
@@ -246,6 +253,7 @@ namespace BlazorWASMAttackTable.Client.Saving
 
             SetupParameter<string>(targetShip.TorpedoSpeed, targetShipEntry.TorpedoSpeed);
 
+            SetupParameter(targetShip.BoatHeading, targetShipEntry.BoatHeading);
             SetupParameter(targetShip.BoatSpeed, targetShipEntry.BoatSpeed);
 
             SetupParameter(targetShip.LeadAngle, targetShipEntry.LeadAngle);

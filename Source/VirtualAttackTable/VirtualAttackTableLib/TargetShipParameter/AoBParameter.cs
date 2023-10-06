@@ -23,13 +23,17 @@ namespace VirtualAttackTableLib.TargetShipParameter
             }
             set
             {
-                if (_aoBQuarter != value)
+                if (_aoBQuarter != value && ActiveDefinitionKey != AoBDefinition.ByHeadingsAndBearing)
                 {
                     _aoBQuarter = value;
                     OnAoBQuarterChanged();
                 }
             }
         }
+
+        public bool SwitchQuarterBySide =>
+            ActiveDefinitionKey == AoBDefinition.Arbitrary ||
+            ActiveDefinitionKey == AoBDefinition.ByHeadingsAndBearing;
         #endregion
 
         #region Methods
@@ -40,7 +44,15 @@ namespace VirtualAttackTableLib.TargetShipParameter
                 definition.Update();
             }
 
-            NotifyParameterChanged();
+            OnParameterChanged();
+        }
+
+        protected override void ProcessParameterChanged()
+        {
+            if (ActiveDefinitionKey == AoBDefinition.ByHeadingsAndBearing)
+            {
+                _aoBQuarter = CurrentValue > MathF.PI ? AoBQuarter.AheadLeft : AoBQuarter.AheadRight;
+            }
         }
         #endregion
     }

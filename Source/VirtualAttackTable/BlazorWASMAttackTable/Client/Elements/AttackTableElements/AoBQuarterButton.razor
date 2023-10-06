@@ -31,7 +31,7 @@
     {
         get
         {
-            if (Parameter.ActiveDefinition is ArbitraryAoBDefinition)
+            if (Parameter.SwitchQuarterBySide)
                 return RepresentedQuarter.IsLeft() == Parameter.AoBQuarter.IsLeft();
 
             return Parameter.AoBQuarter == RepresentedQuarter;
@@ -57,7 +57,12 @@
     #region Methods
     protected override void OnParametersSet()
     {
-        Subscribe(Parameter.ParameterChanged, StateHasChanged);
+        Subscribe(Parameter.ParameterChanged, OnParameterChanged);
+    }
+
+    private void OnParameterChanged()
+    {
+        StateHasChanged();
     }
 
     private void Select()
