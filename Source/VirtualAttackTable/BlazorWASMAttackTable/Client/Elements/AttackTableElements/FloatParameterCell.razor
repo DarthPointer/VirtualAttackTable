@@ -18,11 +18,11 @@
 
         @if (Interaction.CanSetArbitraryValue)
         {
-            <input @bind="DisplayValue" @bind:event="oninput" style="@BadInputStyleAffix" />
+            <input @bind="DisplayValue" @bind:event="oninput" style="@BadInputStyleAffix color: @TextColor;" />
         }
         else
         {
-            <input @bind="DisplayValue" disabled />
+            <input @bind="DisplayValue" style="color: @TextColor;" disabled />
         }
     </div>
 </div>
@@ -30,6 +30,8 @@
 @code
 {
     private string BadInputStyleAffix => BadInput ? "background-color: rgb(250, 250, 0, 0.8);" : "";
+
+    private string TextColor => DependencyLoop ? "rgb(255, 0, 0)" : "rgb(0, 0, 0)";
 
     private ElementReference RootDiv { get; set; }
 }

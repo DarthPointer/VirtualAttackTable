@@ -12,6 +12,8 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         where TParameter : MultipleDefinitionParameter<TDefinitionKey, float>
         where TDefinitionKey : notnull
     {
+        private const string  DEPENDENCY_LOOP = "Dependency Loop";
+
         #region Fields
         private bool _badInput = false;
         private string _displayValue = "";
@@ -31,7 +33,7 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
         {
             get
             {
-                return _displayValue;
+                return DependencyLoop ? DEPENDENCY_LOOP : _displayValue;
             }
             set
             {
@@ -64,6 +66,8 @@ namespace BlazorWASMAttackTable.Client.Elements.AttackTableElements
                 }
             }
         }
+
+        private bool DependencyLoop => Interaction.Parameter.CurrentState == ParameterDefinitionState.DependencyLoop;
 
         private bool HighlightingParametersForActiveDefinition
         {
