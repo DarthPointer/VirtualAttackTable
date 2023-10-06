@@ -7,6 +7,7 @@ namespace BlazorWASMAttackTable.Client.Saving.SaveObjectVersions.CurrentVersion
         public string TypeName { get; set; } = string.Empty;
 
         public FloatCell<BearingDefinition> Bearing { get; set; }
+        public FloatCell<TargetHeadingDefinition> TargetHeading { get; set; }
 
         public FloatCell<AbsoluteHeightDefinition> AbsoluteHeight { get; set; }
         public FloatCell<VisibleHeightDefinition> VisibleHeight { get; set; }
@@ -26,6 +27,7 @@ namespace BlazorWASMAttackTable.Client.Saving.SaveObjectVersions.CurrentVersion
 
         public FloatCell<string> TorpedoSpeed { get; set; }
 
+        public FloatCell<BoatHeadingDefinition> BoatHeading { get; set; }
         public FloatCell<BoatSpeedDefinition> BoatSpeed { get; set; }
 
         public FloatCell<LeadAngleDefinition> LeadAngle { get; set; }

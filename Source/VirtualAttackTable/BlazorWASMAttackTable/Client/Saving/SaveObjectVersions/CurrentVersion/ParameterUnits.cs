@@ -3,6 +3,7 @@
     public class ParameterUnits
     {
         public string Bearing { get; set; } = string.Empty;
+        public string TargetHeading { get; set; } = string.Empty;
 
         public string AbsoluteHeight { get; set; } = string.Empty;
         public string VisibleHeight { get; set; } = string.Empty;
@@ -21,6 +22,7 @@
 
         public string TorpedoSpeed { get; set; } = string.Empty;
 
+        public string BoatHeading { get; set; } = string.Empty;
         public string BoatSpeed { get; set; } = string.Empty;
 
         public string LeadAngle { get; set; } = string.Empty;
