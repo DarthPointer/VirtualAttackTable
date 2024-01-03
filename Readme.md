@@ -1,6 +1,6 @@
 # Welcome to the VirtualAttackTable repository
 
-VirtualAttackTable is deigned to store a table of target vessels when playing subsims. As of now it only "supports" [Wolfpack](https://store.steampowered.com/app/490920/) with target identification filters and ship data based on the assets of this game and supplied with ship images from the extracted game assets.
+VirtualAttackTable is deigned to store a table of target vessels when playing subsims. As of now it only "supports" [Wolfpack](https://store.steampowered.com/app/490920/) with target identification filters and ship data based on the assets of this game. It is supplied with ship images from the extracted game assets.
 
 In order to use the application:
 - Install [ASP.NET Core Runtime 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) (if you don't have it installed yet).
